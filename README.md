@@ -4,6 +4,7 @@
 Tech Challenge da Fase 4 da pós-graduação em Machine Learning (FIAP). **Grupo 98.**
 
 - **Repositório GitHub:** [https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4](https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4)
+- **Vídeo STAR (≤ 5 min):** _pendente — inserir link_
 
 | RM | Integrante | Área de Atuação Principal |
 |---|---|---|
@@ -29,7 +30,7 @@ O objetivo deste projeto é construir a **Camada de Sustentação e Confiabilida
 ```mermaid
 flowchart LR
     A["Dados Brutos (German Credit)"] --> B["Contrato Pandera (Ingestion Gate)"]
-    B -->|Lote Válido| C["Treinamento Baseline (Random Forest)"]
+    B -->|Lote Válido| C["Treinamento Baseline (XGBoost)"]
     B -->|Lote Corrupto| X["DataContractViolationError (Bloqueio)"]
     C --> D["Simulação de Produção (Choque Inflacionário)"]
     D --> E["Evidently AI (PSI & KS Tests)"]
@@ -81,7 +82,7 @@ Implementada em `src/credit/data/contracts.py` através do **Pandera**, a valida
 
 - **Idade Válida:** `Age >= 18` (apenas indivíduos civilmente capazes podem contrair crédito).
 - **Sem Valores Nulos:** Nenhuma coluna fundamental aceita valores ausentes (`nullable=False`), e dados categóricos nulos devem vir previamente categorizados de forma determinística (`unknown`).
-- **Sem Duplicatas:** O lote é verificado contra duplicações acidentais de registros.
+- **Sem Duplicatas:** O lote é rejeitado se dois registros tiverem as mesmas features (`unique` do `DataFrameSchema`), mesmo com rótulos diferentes.
 - **Categorias Fechadas:** Variáveis como `Sex` (`male`, `female`), `Housing` (`own`, `rent`, `free`), `Saving accounts` e `Checking account` possuem domínios permitidos estritos.
 - **Limites e Tipagem:** `Credit amount` e `Duration` devem ser estritamente positivos.
 
@@ -90,8 +91,8 @@ Para evidenciar a barreira de dados, `src/credit/run_etapa1.py` injeta um lote p
 
 ### 3.2. Etapa 2 — Simulação e Detecção Estatística de Drift
 
-Para diagnosticar a degradação silenciosa provocada por transformações socioeconômicas, o script `src/credit/drift/simulate_drift.py` simula o ambiente de produção sob estresse:
-1. **Choque Inflacionário:** Multiplicação de `Credit amount` em 1.5x e adição de ruído estocástico, simulando maior necessidade de capital nominal pelos tomadores.
+Para diagnosticar a degradação silenciosa provocada por transformações socioeconômicas, o script `src/credit/data/simulate_drift.py` simula o ambiente de produção sob estresse:
+1. **Choque Inflacionário:** Multiplicação de `Credit amount` em 1.6x e adição de ruído estocástico, simulando maior necessidade de capital nominal pelos tomadores.
 2. **Rejuvenescimento do Perfil:** Deslocamento da média de `Age` para perfis mais jovens (entrantes no mercado digital de fintechs com histórico creditício escasso).
 3. **Liquidez Comprimida:** Degradação das faixas de saldo em `Checking account`, elevando proporções de clientes com liquidez classificada em `little`.
 
@@ -112,9 +113,12 @@ Implementada em `src/credit/observability.py` e integrada em `src/credit/pipelin
 - **Tracking Server:** Configurado sobre backend SQLite seguro (`sqlite:///mlflow.db`) e diretório `./mlruns`.
 - **Logs Estruturados:** Todas as execuções gravam logs padronizados com timestamps, níveis de severidade e latência por etapa no arquivo operacional `reports/pipeline_execution.log`.
 - **Métricas de Saúde Registradas no MLflow:**
-  - `latency_validation_seconds`, `latency_training_seconds`, `latency_drift_seconds` e `latency_total_seconds`.
-  - Contagem de registros processados: `rows_reference` e `rows_production`.
+  - Latência por estágio: `latency_validation_seconds`, `latency_ingestion_gate_seconds`, `latency_split_seconds`, `latency_training_seconds`, `latency_simulation_seconds`, `latency_drift_detection_seconds` e `latency_total_seconds`.
+  - Volume processado: `rows_raw_base`, `rows_reference`, `rows_production_raw` e `rows_production_drifted`.
+  - Ingestion Gate (lote corrompido submetido a cada run): `contract_rejected_batches`, `contract_rejected_rows` e `contract_violations_count`.
   - Contagem de alertas críticos: `drift_critical_alerts_count` (contagem de variáveis com $\text{PSI} \ge 0.25$).
+- **Status da Execução:** tags `pipeline.status` (`success`/`failed`) e `pipeline.drift_alert` (`OK`/`CRITICAL`). Em falha, a run também recebe `pipeline.failed_stage` e `pipeline.error`, e o log de execução é anexado como artefato.
+- **Contrato na Produção:** o dataset de Produção com drift passa pelo mesmo contrato Pandera antes de qualquer predição.
   - Métricas de desempenho do modelo: `model_roc_auc`, `model_accuracy` e `model_f1_bad_risk`.
 - **Persistência de Artefatos:** Cada run anexa automaticamente o modelo serializado (`models/credit_baseline.joblib`), as métricas JSON, o log de execução e os relatórios interativos HTML e CSV do Evidently.
 
@@ -196,7 +200,7 @@ flowchart TD
 - **Concept Drift (Mudança em $P(Y \mid X)$):**
   Como as variáveis preditoras mudaram de escala e contexto socioeconômico, a correlação entre as features e o verdadeiro comportamento de adimplência mudou. Um empréstimo de valor elevado já não indicava necessariamente uma compra suntuária arriscada, mas sim a reposição inflacionária ordinária.
 - **Impacto no Desempenho do Modelo:**
-  O classificador baseline (*Random Forest*), cujas regras de partição e limites de decisão foram calibrados sobre o espaço de treino original, perdeu completamente a calibração de probabilidades:
+  O classificador baseline (*XGBoost*), cujas regras de partição e limites de decisão foram calibrados sobre o espaço de treino original, perdeu completamente a calibração de probabilidades:
   - **ROC-AUC em Holdout (Referência):** $0.7631$ (modelo com bom poder discriminativo).
   - **ROC-AUC em Produção:** $0.5623$ (modelo degradado para próximo de um classificador aleatório, $\Delta = -0.2008$).
   - **Acurácia Global:** Sofreu queda de $72.57\%$ para $64.67\%$.
@@ -219,7 +223,7 @@ grupo-98-tech-challenger-fase4/
 │   ├── reference/                 <- Dataset de treino/baseline (700 registros limpos)
 │   └── production/                <- Datasets de produção (com drift injetado)
 ├── models/
-│   ├── credit_baseline.joblib     <- Modelo Random Forest serializado
+│   ├── credit_baseline.joblib     <- Modelo XGBoost serializado
 │   └── credit_baseline_metrics.json <- Hiperparâmetros e métricas de validação
 ├── reports/
 │   ├── drift_report.html          <- Relatório interativo do Evidently AI
@@ -228,16 +232,17 @@ grupo-98-tech-challenger-fase4/
 │   └── pipeline_execution.log     <- Log estruturado operacional do pipeline
 ├── src/
 │   └── credit/
+│       ├── config.py              <- Caminhos, features e constantes compartilhadas
 │       ├── data/
 │       │   ├── contracts.py       <- Esquema e regras estritas do Pandera
 │       │   ├── make_dataset.py    <- Download e pareamento de target do German Credit
-│       │   └── split_dataset.py   <- Divisão em referência (70%) e produção (30%)
+│       │   ├── preprocess.py      <- Carga validada e divisão em referência (70%) e produção (30%)
+│       │   └── simulate_drift.py  <- Injeção de choques de inflação, deslocamento etário e recessão
 │       ├── model/
-│       │   ├── baseline.py        <- Treinamento, pipeline Scikit-Learn e avaliação
-│       │   └── evaluate_production.py <- Avaliação de desempenho sobre lote de produção
+│       │   └── baseline.py        <- Treinamento, avaliação e predição (pipeline Scikit-Learn + XGBoost)
 │       ├── drift/
-│       │   ├── simulate_drift.py  <- Injeção de choques de inflação e deslocamento etário
-│       │   └── detect_drift.py    <- Execução de testes estatísticos com Evidently AI
+│       │   ├── detect.py          <- Cálculo de PSI e teste KS por feature
+│       │   └── report.py          <- Relatórios Evidently AI (HTML), CSV e sumário de drift
 │       ├── observability.py       <- Configuração de logging e integração com MLflow
 │       ├── pipeline.py            <- Orquestrador unificado de ponta a ponta
 │       ├── run_etapa1.py          <- Script executável de validação de contratos e bloqueio
