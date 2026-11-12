@@ -27,7 +27,7 @@ Referência = performance de **holdout** (out-of-sample) do treino; Produção =
 
 | Métrica | Referência (holdout) | Produção | Queda |
 |---|---|---|---|
-| ROC-AUC | 0.8528 | 0.5757 | 0.2771 |
-| Accuracy | 0.7851 | 0.6327 | 0.1524 |
+| ROC-AUC | 0.852 | 0.5762 | 0.2758 |
+| Accuracy | 0.7886 | 0.63 | 0.1586 |
 
 > O relatório visual completo do Evidently está em `drift_report.html`.

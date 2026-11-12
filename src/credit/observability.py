@@ -69,6 +69,9 @@ def track_stage_latency(stage_name: str) -> Generator[dict[str, float], None, No
     logger.info(">>> Iniciando estágio: [%s]", stage_name)
     try:
         yield result
+    except Exception:
+        logger.error("!!! Falha no estágio: [%s]", stage_name)
+        raise
     finally:
         elapsed = time.perf_counter() - start
         result["duration"] = round(elapsed, 4)
@@ -80,6 +83,7 @@ def log_operational_metrics(
     processed_rows: dict[str, int],
     drift_stats_df: Any | None = None,
     eval_metrics: dict[str, Any] | None = None,
+    contract_metrics: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     """Registra no MLflow métricas operacionais, parâmetros e contagem de alertas.
 
@@ -92,6 +96,9 @@ def log_operational_metrics(
         key = f"latency_{stage}_seconds"
         mlflow.log_metric(key, duration)
         logged_metrics[key] = duration
+    total_latency = round(sum(latencies.values()), 4)
+    mlflow.log_metric("latency_total_seconds", total_latency)
+    logged_metrics["latency_total_seconds"] = total_latency
 
     # 2. Volume de registros processados
     for dataset_name, count in processed_rows.items():
@@ -108,7 +115,12 @@ def log_operational_metrics(
                 mlflow.log_metric(key, val)
                 logged_metrics[key] = val
 
-    # 4. Métricas estatísticas de drift e contagem de alertas
+    # 4. Resultado do Ingestion Gate (lotes/registros bloqueados pelo contrato)
+    for key, val in (contract_metrics or {}).items():
+        mlflow.log_metric(key, val)
+        logged_metrics[key] = val
+
+    # 5. Métricas estatísticas de drift e contagem de alertas
     critical_alerts = 0
     if drift_stats_df is not None:
         for _, row in drift_stats_df.iterrows():
@@ -135,6 +147,16 @@ def log_operational_metrics(
         critical_alerts,
     )
     return logged_metrics
+
+
+def mark_pipeline_failed(stage_name: str, error: Exception) -> None:
+    """Marca a run ativa como falha, tornando o estágio e o erro visíveis no MLflow."""
+    logger.exception("Pipeline interrompido no estágio [%s]: %s", stage_name, error)
+    mlflow.set_tag("pipeline.status", "failed")
+    mlflow.set_tag("pipeline.failed_stage", stage_name)
+    mlflow.set_tag("pipeline.error", f"{type(error).__name__}: {error}"[:500])
+    if LOG_FILE.exists():
+        mlflow.log_artifact(str(LOG_FILE))
 
 
 def log_pipeline_artifacts() -> None:

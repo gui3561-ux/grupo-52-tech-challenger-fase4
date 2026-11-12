@@ -330,3 +330,42 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-10 14:30:39 [INFO] credit.pipeline -    Run ID: 1a9594ef1b834516ac441cacffbeb4bd
 2026-11-10 14:30:39 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
 2026-11-10 14:30:39 [INFO] credit.pipeline - =================================================================
+2026-11-12 20:25:43 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-12 20:25:43 [INFO] credit.pipeline - =================================================================
+2026-11-12 20:25:43 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-12 20:25:43 [INFO] credit.pipeline - =================================================================
+2026-11-12 20:25:43 [INFO] credit.pipeline - MLflow Run iniciada com ID: 3bfec6963d3d405980064013cb1a4356
+2026-11-12 20:25:43 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-12 20:25:43 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0404 segundos
+2026-11-12 20:25:43 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-12 20:25:43 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-12 20:25:43 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0256 segundos
+2026-11-12 20:25:43 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-12 20:25:43 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0259 segundos
+2026-11-12 20:25:43 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-12 20:25:44 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5209 segundos
+2026-11-12 20:25:44 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-12 20:25:44 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0094 segundos
+2026-11-12 20:25:44 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-12 20:25:44 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.5000 segundos
+2026-11-12 20:25:44 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-12 20:25:44 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.1222s, alertas críticos de drift=2
+2026-11-12 20:25:44 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-12 20:25:44 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-12 20:25:44 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-12 20:25:44 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-12 20:25:44 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-12 20:25:44 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-12 20:25:44 [INFO] credit.pipeline - =================================================================
+2026-11-12 20:25:44 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-12 20:25:44 [INFO] credit.pipeline -    Run ID: 3bfec6963d3d405980064013cb1a4356
+2026-11-12 20:25:44 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-12 20:25:44 [INFO] credit.pipeline - =================================================================

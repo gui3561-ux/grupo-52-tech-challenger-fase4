@@ -11,6 +11,8 @@ import pandas as pd
 import pandera.pandas as pa
 from pandera.errors import SchemaError, SchemaErrors
 
+from src.credit import config as C
+
 # Categorias válidas homologadas pelo domínio
 VALID_SEX = ["female", "male"]
 VALID_JOB = [0, 1, 2, 3]
@@ -28,6 +30,9 @@ VALID_PURPOSE = [
     "vacation/others",
 ]
 VALID_RISK = ["bad", "good"]
+
+# Nome que o Pandera atribui à checagem de `unique` com múltiplas colunas.
+UNIQUENESS_CHECK = "multiple_fields_uniqueness"
 
 # Esquema estrito Pandera para validação de crédito
 CREDIT_DATA_SCHEMA = pa.DataFrameSchema(
@@ -94,6 +99,10 @@ CREDIT_DATA_SCHEMA = pa.DataFrameSchema(
             description="Rótulo de risco do cliente (good ou bad)",
         ),
     },
+    # Unicidade só nas features: o mesmo perfil repetido (mesmo com rótulo
+    # diferente) indica reprocessamento/duplicação na ingestão.
+    unique=C.FEATURES,
+    report_duplicates="exclude_first",
     coerce=True,
     strict=False,
 )
@@ -130,17 +139,25 @@ def validate_credit_data(
     except SchemaErrors as err:
         failure_df = err.failure_cases
         summary_lines = []
+        duplicated_indexes: set = set()
         for _, row in failure_df.iterrows():
             col = row.get("column", "DataFrame")
             check = row.get("check", "unspecified")
             val = row.get("failure_case", "unknown")
             idx = row.get("index", "?")
+            # A checagem de unicidade gera uma falha por coluna; resumimos em uma
+            # linha por registro para não esconder as demais violações.
+            if check == UNIQUENESS_CHECK:
+                if idx not in duplicated_indexes:
+                    duplicated_indexes.add(idx)
+                    summary_lines.append(f"  - Registro (índice {idx}): duplicado, violou checagem '{check}'")
+                continue
             summary_lines.append(f"  - Coluna '{col}' (índice {idx}): valor '{val}' violou checagem '{check}'")
         summary_text = "\n".join(summary_lines[:15])
         if len(summary_lines) > 15:
             summary_text += f"\n  ... e mais {len(summary_lines) - 15} violações adicionais."
         msg = (
-            f"Barreira de Ingestão: {len(failure_df)} violação(ões) do contrato de dados detectada(s):\n"
+            f"Barreira de Ingestão: {len(summary_lines)} violação(ões) do contrato de dados detectada(s):\n"
             f"{summary_text}"
         )
         raise DataContractViolationError(msg, failure_cases=failure_df) from err
@@ -159,19 +176,20 @@ def build_corrupted_batch() -> pd.DataFrame:
     4. Categoria desconhecida de Purpose ('crypto_trading') -> viola categorias homologadas.
     5. Categoria inexistente de Sex ('unknown') -> viola categorias de sexo.
     6. Valor nulo em coluna obrigatória Housing (None) -> viola nullable=False.
+    7. Registro duplicado (última linha repete a penúltima) -> viola unicidade.
     """
     return pd.DataFrame(
         {
-            "Age": [15, 35, 42, 28, 50],
-            "Credit amount": [1500, -1000, 3000, 2500, 4000],
-            "Duration": [12, 24, 0, 18, 36],
-            "Sex": ["female", "male", "unknown", "female", "male"],
-            "Job": [2, 1, 3, 2, 2],
-            "Housing": ["own", "rent", "own", None, "free"],
-            "Saving accounts": ["little", "moderate", "no_account", "rich", "little"],
-            "Checking account": ["little", "no_account", "moderate", "rich", "no_account"],
-            "Purpose": ["radio/TV", "car", "crypto_trading", "education", "business"],
-            "Risk": ["good", "bad", "good", "bad", "good"],
+            "Age": [15, 35, 42, 28, 50, 50],
+            "Credit amount": [1500, -1000, 3000, 2500, 4000, 4000],
+            "Duration": [12, 24, 0, 18, 36, 36],
+            "Sex": ["female", "male", "unknown", "female", "male", "male"],
+            "Job": [2, 1, 3, 2, 2, 2],
+            "Housing": ["own", "rent", "own", None, "free", "free"],
+            "Saving accounts": ["little", "moderate", "no_account", "rich", "little", "little"],
+            "Checking account": ["little", "no_account", "moderate", "rich", "no_account", "no_account"],
+            "Purpose": ["radio/TV", "car", "crypto_trading", "education", "business", "business"],
+            "Risk": ["good", "bad", "good", "bad", "good", "good"],
         }
     )
 
