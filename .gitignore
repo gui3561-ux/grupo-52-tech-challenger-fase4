@@ -19,3 +19,4 @@ mlruns/
 mlflow.db
 
 
+.ipynb_checkpoints/
