@@ -4,6 +4,10 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+
+# Testes da Fase 3 (LSTM/PETR4). tensorflow fica no extra opcional `legacy`;
+# sem ele, pula estes testes em vez de quebrar a coleta da suíte inteira.
+pytest.importorskip("tensorflow", reason="requer o extra legacy: uv sync --extra legacy")
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 from sklearn.preprocessing import MinMaxScaler
