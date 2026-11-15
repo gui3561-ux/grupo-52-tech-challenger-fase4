@@ -53,6 +53,39 @@ def test_log_operational_metrics_calculation(tmp_path, monkeypatch):
     assert metrics["model_roc_auc"] == 0.76
 
 
+def test_log_operational_metrics_flags_performance_degradation(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with mlflow.start_run() as run:
+        metrics = log_operational_metrics(
+            latencies={"validation": 0.05},
+            processed_rows={"reference": 700},
+            eval_metrics={"roc_auc": 0.85, "accuracy": 0.78},
+            production_metrics={"roc_auc": 0.58, "accuracy": 0.63},
+        )
+
+    assert metrics["production_roc_auc"] == 0.58
+    assert metrics["roc_auc_drop"] == 0.27
+    tags = mlflow.get_run(run.info.run_id).data.tags
+    assert tags["pipeline.performance_alert"] == "DEGRADED"
+
+
+def test_log_operational_metrics_without_production_skips_performance_tag(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with mlflow.start_run() as run:
+        metrics = log_operational_metrics(
+            latencies={"validation": 0.05},
+            processed_rows={"reference": 700},
+            eval_metrics={"roc_auc": 0.85},
+        )
+
+    assert "roc_auc_drop" not in metrics
+    assert "pipeline.performance_alert" not in mlflow.get_run(run.info.run_id).data.tags
+
+
 def test_run_pipeline_returns_summary(tmp_path):
     setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/pipeline_test.db")
     summary = run_pipeline()
@@ -60,4 +93,5 @@ def test_run_pipeline_returns_summary(tmp_path):
     assert summary["total_latency_seconds"] > 0
     assert summary["roc_auc_holdout"] > 0.5
     assert summary["drift_critical_alerts"] >= 0
+    assert summary["roc_auc_drop"] == round(summary["roc_auc_holdout"] - summary["roc_auc_production"], 4)
 

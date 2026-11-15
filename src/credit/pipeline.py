@@ -28,6 +28,7 @@ from src.credit.model.baseline import train_baseline
 from src.credit.observability import (
     logger,
     log_operational_metrics,
+    ROC_AUC_DROP_ALERT_THRESHOLD,
     log_pipeline_artifacts,
     setup_mlflow,
     track_stage_latency,
@@ -59,6 +60,7 @@ def run_pipeline() -> dict[str, str | float]:
                 "model_algorithm": "XGBClassifier",
                 "validation_framework": "Pandera",
                 "drift_framework": "Evidently AI + SciPy (PSI/KS)",
+                "roc_auc_drop_alert_threshold": ROC_AUC_DROP_ALERT_THRESHOLD,
             }
         )
 
@@ -99,6 +101,7 @@ def run_pipeline() -> dict[str, str | float]:
             processed_rows=processed_rows,
             drift_stats_df=drift_stats_df,
             eval_metrics=train_metrics,
+            production_metrics=drift_results["perf_production"],
         )
         log_pipeline_artifacts()
 
@@ -113,6 +116,8 @@ def run_pipeline() -> dict[str, str | float]:
             "total_latency_seconds": round(sum(latencies.values()), 4),
             "roc_auc_holdout": train_metrics["roc_auc"],
             "drift_critical_alerts": logged_metrics["drift_critical_alerts_count"],
+            "roc_auc_production": logged_metrics["production_roc_auc"],
+            "roc_auc_drop": logged_metrics["roc_auc_drop"],
         }
 
 

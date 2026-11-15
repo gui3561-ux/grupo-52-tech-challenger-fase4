@@ -27,6 +27,12 @@ EXPERIMENT_NAME = "credit-scoring-mlops"
 DEFAULT_TRACKING_URI = "sqlite:///mlflow.db"
 LOG_FILE = Path("reports") / "pipeline_execution.log"
 
+# Queda máxima tolerada de ROC-AUC (holdout -> produção) antes de marcar a run
+# como degradada. Data drift (PSI) mostra que a entrada mudou; esta queda mostra
+# que a mudança afetou o negócio. 0.05 é uma tolerância prática comum para
+# scoring; deve ser recalibrada com o time de risco.
+ROC_AUC_DROP_ALERT_THRESHOLD = 0.05
+
 
 def configure_logger(name: str = "credit.pipeline", level: int = logging.INFO) -> logging.Logger:
     """Configura logger estruturado com saída em console e arquivo de log operacional."""
@@ -80,6 +86,7 @@ def log_operational_metrics(
     processed_rows: dict[str, int],
     drift_stats_df: Any | None = None,
     eval_metrics: dict[str, Any] | None = None,
+    production_metrics: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Registra no MLflow métricas operacionais, parâmetros e contagem de alertas.
 
@@ -108,6 +115,23 @@ def log_operational_metrics(
                 mlflow.log_metric(key, val)
                 logged_metrics[key] = val
 
+    # 3b. Performance em produção (Concept Drift). Sem isso o dashboard só mostra
+    # o modelo "saudável" do holdout e a degradação silenciosa fica invisível.
+    performance_degraded = False
+    if production_metrics:
+        for metric_name in ["roc_auc", "accuracy"]:
+            if metric_name in production_metrics:
+                key = f"production_{metric_name}"
+                val = float(production_metrics[metric_name])
+                mlflow.log_metric(key, val)
+                logged_metrics[key] = val
+
+        if eval_metrics and "roc_auc" in eval_metrics and "roc_auc" in production_metrics:
+            drop = round(float(eval_metrics["roc_auc"]) - float(production_metrics["roc_auc"]), 4)
+            mlflow.log_metric("roc_auc_drop", drop)
+            logged_metrics["roc_auc_drop"] = drop
+            performance_degraded = drop >= ROC_AUC_DROP_ALERT_THRESHOLD
+
     # 4. Métricas estatísticas de drift e contagem de alertas
     critical_alerts = 0
     if drift_stats_df is not None:
@@ -128,6 +152,8 @@ def log_operational_metrics(
     # Tags de status
     mlflow.set_tag("pipeline.status", "success")
     mlflow.set_tag("pipeline.drift_alert", "CRITICAL" if critical_alerts > 0 else "OK")
+    if production_metrics:
+        mlflow.set_tag("pipeline.performance_alert", "DEGRADED" if performance_degraded else "OK")
 
     logger.info(
         "Métricas registradas no MLflow: latência total=%.4fs, alertas críticos de drift=%d",

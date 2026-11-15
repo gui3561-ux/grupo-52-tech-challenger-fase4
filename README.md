@@ -126,7 +126,11 @@ Implementada em `src/credit/observability.py` e integrada em `src/credit/pipelin
   - `latency_validation_seconds`, `latency_training_seconds`, `latency_drift_seconds` e `latency_total_seconds`.
   - Contagem de registros processados: `rows_reference` e `rows_production`.
   - Contagem de alertas críticos: `drift_critical_alerts_count` (contagem de variáveis com $\text{PSI} \ge 0.25$).
-  - Métricas de desempenho do modelo: `model_roc_auc`, `model_accuracy` e `model_f1_bad_risk`.
+  - Métricas de desempenho do modelo (holdout): `model_roc_auc`, `model_accuracy` e `model_f1_bad`.
+  - Métricas de desempenho em produção (Concept Drift): `production_roc_auc`, `production_accuracy` e `roc_auc_drop` (queda de ROC-AUC do holdout para a produção).
+- **Tags de Alerta (filtráveis na UI do MLflow):**
+  - `pipeline.drift_alert`: `CRITICAL` se alguma feature tem $\text{PSI} \ge 0.25$ (os dados de entrada mudaram).
+  - `pipeline.performance_alert`: `DEGRADED` se `roc_auc_drop` $\ge 0.05$ (a mudança afetou a qualidade do risco). O limiar é registrado como parâmetro da run (`roc_auc_drop_alert_threshold`).
 - **Persistência de Artefatos:** Cada run anexa automaticamente o modelo serializado (`models/credit_baseline.joblib`), as métricas JSON, o log de execução e os relatórios interativos HTML e CSV do Evidently.
 
 ---
