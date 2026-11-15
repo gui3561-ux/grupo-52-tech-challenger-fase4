@@ -129,6 +129,7 @@ Implementada em `src/credit/observability.py` e integrada em `src/credit/pipelin
   - Métricas de desempenho do modelo (holdout): `model_roc_auc`, `model_accuracy` e `model_f1_bad`.
   - Métricas de desempenho em produção (Concept Drift): `production_roc_auc`, `production_accuracy` e `roc_auc_drop` (queda de ROC-AUC do holdout para a produção).
   - Ingestion Gate no lote de produção: `contract_violations_production` (0 quando o lote atende ao contrato). O lote que chega em produção passa pelo mesmo contrato Pandera do treino antes de qualquer inferência.
+  - Saúde da infraestrutura por estágio: `cpu_percent_<estágio>` (tempo de CPU / tempo de parede; acima de 100% indica uso de mais de um núcleo) e `memory_rss_mb_<estágio>` (memória residente do processo ao fim do estágio). O ambiente de execução fica registrado nas tags `infra.platform`, `infra.python_version`, `infra.cpu_count` e `infra.total_memory_gb`, para distinguir regressão de código de diferença de máquina.
 - **Tags de Alerta (filtráveis na UI do MLflow):**
   - `ingestion_gate.<lote>`: `PASSED` ou `BLOCKED`. A demonstração da Etapa 1 (`run_etapa1`) registra o lote corrompido como uma run `FAILED` (`ingestion_gate_corrupted_batch_demo`), deixando o bloqueio como evidência no dashboard.
   - `pipeline.drift_alert`: `CRITICAL` se alguma feature tem $\text{PSI} \ge 0.25$ (os dados de entrada mudaram).

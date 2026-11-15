@@ -28,6 +28,7 @@ from src.credit.model.baseline import train_baseline
 from src.credit.observability import (
     logger,
     DEFAULT_TRACKING_URI,
+    log_infra_context,
     log_operational_metrics,
     ROC_AUC_DROP_ALERT_THRESHOLD,
     log_pipeline_artifacts,
@@ -54,6 +55,7 @@ def run_pipeline(tracking_uri: str = DEFAULT_TRACKING_URI) -> dict[str, str | fl
     with mlflow.start_run(run_name="credit_scoring_mlops_pipeline") as run:
         run_id = run.info.run_id
         logger.info("MLflow Run iniciada com ID: %s", run_id)
+        log_infra_context()
 
         # Log de parâmetros de governança e configuração
         mlflow.log_params(

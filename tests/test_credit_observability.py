@@ -88,6 +88,21 @@ def test_log_operational_metrics_without_production_skips_performance_tag(tmp_pa
     assert "pipeline.performance_alert" not in mlflow.get_run(run.info.run_id).data.tags
 
 
+def test_track_stage_latency_records_resource_usage(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with mlflow.start_run() as run:
+        with track_stage_latency("busy_stage") as stage:
+            sum(i * i for i in range(200_000))
+
+    assert stage["memory_rss_mb"] > 0
+    assert stage["cpu_percent"] >= 0
+    metrics = mlflow.get_run(run.info.run_id).data.metrics
+    assert "memory_rss_mb_busy_stage" in metrics
+    assert "cpu_percent_busy_stage" in metrics
+
+
 def test_track_stage_latency_tags_failed_stage(tmp_path):
     setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
     import mlflow
@@ -155,5 +170,9 @@ def test_run_pipeline_returns_summary(tmp_path):
     assert summary["total_latency_seconds"] > 0
     assert summary["roc_auc_holdout"] > 0.5
     assert summary["drift_critical_alerts"] >= 0
+    import mlflow
+
+    tags = mlflow.get_run(summary["run_id"]).data.tags
+    assert "infra.platform" in tags and "infra.cpu_count" in tags
     assert summary["roc_auc_drop"] == round(summary["roc_auc_holdout"] - summary["roc_auc_production"], 4)
 

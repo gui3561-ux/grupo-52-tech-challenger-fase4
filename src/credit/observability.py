@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import logging
 import os
+import platform
 import time
 from contextlib import contextmanager
 from pathlib import Path
@@ -17,6 +18,7 @@ from typing import Any, Generator
 
 import mlflow
 import pandas as pd
+import psutil
 
 from src.credit import config as C
 from src.credit.data.contracts import DataContractViolationError, validate_credit_data
@@ -72,6 +74,8 @@ def setup_mlflow(tracking_uri: str = DEFAULT_TRACKING_URI) -> None:
 def track_stage_latency(stage_name: str) -> Generator[dict[str, float], None, None]:
     """Context manager para cronometrar a duração de execução de um estágio do pipeline."""
     result: dict[str, float] = {"duration": 0.0}
+    process = psutil.Process()
+    cpu_before = process.cpu_times()
     start = time.perf_counter()
     logger.info(">>> Iniciando estágio: [%s]", stage_name)
     try:
@@ -87,7 +91,42 @@ def track_stage_latency(stage_name: str) -> Generator[dict[str, float], None, No
     finally:
         elapsed = time.perf_counter() - start
         result["duration"] = round(elapsed, 4)
-        logger.info("<<< Concluído estágio: [%s] em %.4f segundos", stage_name, elapsed)
+
+        # Saúde da infraestrutura por estágio: memória residente do processo e
+        # uso de CPU (tempo de CPU / tempo de parede; >100% = mais de um núcleo).
+        # Um estágio que passa a consumir muito mais memória ou CPU entre runs é
+        # sinal de dado maior que o esperado ou de regressão de código.
+        cpu_after = process.cpu_times()
+        cpu_seconds = (cpu_after.user - cpu_before.user) + (cpu_after.system - cpu_before.system)
+        result["cpu_percent"] = round(100 * cpu_seconds / elapsed, 1) if elapsed > 0 else 0.0
+        result["memory_rss_mb"] = round(process.memory_info().rss / 1024**2, 1)
+        if mlflow.active_run() is not None:
+            mlflow.log_metric(f"cpu_percent_{stage_name}", result["cpu_percent"])
+            mlflow.log_metric(f"memory_rss_mb_{stage_name}", result["memory_rss_mb"])
+
+        logger.info(
+            "<<< Concluído estágio: [%s] em %.4f segundos | CPU %.1f%% | RSS %.1f MB",
+            stage_name,
+            elapsed,
+            result["cpu_percent"],
+            result["memory_rss_mb"],
+        )
+
+
+def log_infra_context() -> None:
+    """Registra como tags o ambiente em que a run executou.
+
+    Sem isso não dá para saber se uma mudança de latência ou memória entre runs
+    veio do código ou da máquina (ex.: Mac M1 local vs. container Linux).
+    """
+    mlflow.set_tags(
+        {
+            "infra.platform": platform.platform(),
+            "infra.python_version": platform.python_version(),
+            "infra.cpu_count": str(os.cpu_count()),
+            "infra.total_memory_gb": str(round(psutil.virtual_memory().total / 1024**3, 1)),
+        }
+    )
 
 
 def validate_batch_with_tracking(df: pd.DataFrame, batch_name: str) -> pd.DataFrame:
