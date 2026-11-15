@@ -27,6 +27,7 @@ from src.credit.drift.report import build_drift_report
 from src.credit.model.baseline import train_baseline
 from src.credit.observability import (
     logger,
+    DEFAULT_TRACKING_URI,
     log_operational_metrics,
     ROC_AUC_DROP_ALERT_THRESHOLD,
     log_pipeline_artifacts,
@@ -35,9 +36,12 @@ from src.credit.observability import (
 )
 
 
-def run_pipeline() -> dict[str, str | float]:
-    """Executa o pipeline completo de ponta a ponta e registra na run do MLflow."""
-    setup_mlflow()
+def run_pipeline(tracking_uri: str = DEFAULT_TRACKING_URI) -> dict[str, str | float]:
+    """Executa o pipeline completo de ponta a ponta e registra na run do MLflow.
+
+    `tracking_uri` é parametrizável para que testes não escrevam no mlflow.db do projeto.
+    """
+    setup_mlflow(tracking_uri)
 
     logger.info("=================================================================")
     logger.info("   INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   ")

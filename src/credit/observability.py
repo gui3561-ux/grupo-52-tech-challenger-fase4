@@ -75,6 +75,14 @@ def track_stage_latency(stage_name: str) -> Generator[dict[str, float], None, No
     logger.info(">>> Iniciando estágio: [%s]", stage_name)
     try:
         yield result
+    except Exception:
+        # Sem isso a run aparece só como FAILED no MLflow, sem dizer onde
+        # quebrou. As tags permitem filtrar falhas por estágio na UI.
+        logger.exception("!!! Falha no estágio: [%s]", stage_name)
+        if mlflow.active_run() is not None:
+            mlflow.set_tag("pipeline.status", "failed")
+            mlflow.set_tag("pipeline.failed_stage", stage_name)
+        raise
     finally:
         elapsed = time.perf_counter() - start
         result["duration"] = round(elapsed, 4)

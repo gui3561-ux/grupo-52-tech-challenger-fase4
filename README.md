@@ -131,6 +131,7 @@ Implementada em `src/credit/observability.py` e integrada em `src/credit/pipelin
 - **Tags de Alerta (filtráveis na UI do MLflow):**
   - `pipeline.drift_alert`: `CRITICAL` se alguma feature tem $\text{PSI} \ge 0.25$ (os dados de entrada mudaram).
   - `pipeline.performance_alert`: `DEGRADED` se `roc_auc_drop` $\ge 0.05$ (a mudança afetou a qualidade do risco). O limiar é registrado como parâmetro da run (`roc_auc_drop_alert_threshold`).
+  - `pipeline.status`: `success` ou `failed`; em caso de falha, `pipeline.failed_stage` indica o estágio que quebrou (ex.: `data_validation` quando o contrato Pandera bloqueia um lote), com o traceback no log operacional.
 - **Persistência de Artefatos:** Cada run anexa automaticamente o modelo serializado (`models/credit_baseline.joblib`), as métricas JSON, o log de execução e os relatórios interativos HTML e CSV do Evidently.
 
 ---
