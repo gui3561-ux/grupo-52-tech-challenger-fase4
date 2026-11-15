@@ -128,7 +128,9 @@ Implementada em `src/credit/observability.py` e integrada em `src/credit/pipelin
   - Contagem de alertas críticos: `drift_critical_alerts_count` (contagem de variáveis com $\text{PSI} \ge 0.25$).
   - Métricas de desempenho do modelo (holdout): `model_roc_auc`, `model_accuracy` e `model_f1_bad`.
   - Métricas de desempenho em produção (Concept Drift): `production_roc_auc`, `production_accuracy` e `roc_auc_drop` (queda de ROC-AUC do holdout para a produção).
+  - Ingestion Gate no lote de produção: `contract_violations_production` (0 quando o lote atende ao contrato). O lote que chega em produção passa pelo mesmo contrato Pandera do treino antes de qualquer inferência.
 - **Tags de Alerta (filtráveis na UI do MLflow):**
+  - `ingestion_gate.<lote>`: `PASSED` ou `BLOCKED`. A demonstração da Etapa 1 (`run_etapa1`) registra o lote corrompido como uma run `FAILED` (`ingestion_gate_corrupted_batch_demo`), deixando o bloqueio como evidência no dashboard.
   - `pipeline.drift_alert`: `CRITICAL` se alguma feature tem $\text{PSI} \ge 0.25$ (os dados de entrada mudaram).
   - `pipeline.performance_alert`: `DEGRADED` se `roc_auc_drop` $\ge 0.05$ (a mudança afetou a qualidade do risco). O limiar é registrado como parâmetro da run (`roc_auc_drop_alert_threshold`).
   - `pipeline.status`: `success` ou `failed`; em caso de falha, `pipeline.failed_stage` indica o estágio que quebrou (ex.: `data_validation` quando o contrato Pandera bloqueia um lote), com o traceback no log operacional.

@@ -10,6 +10,8 @@ from src.credit.observability import (
     setup_mlflow,
     track_stage_latency,
 )
+from src.credit.data.contracts import DataContractViolationError, build_corrupted_batch
+from src.credit.observability import validate_batch_with_tracking
 from src.credit.pipeline import run_pipeline
 
 
@@ -118,6 +120,33 @@ def test_run_pipeline_records_failure_and_reraises(tmp_path, monkeypatch):
     assert len(runs) == 1
     assert runs.iloc[0]["status"] == "FAILED"
     assert runs.iloc[0]["tags.pipeline.failed_stage"] == "data_validation"
+
+
+def test_validate_batch_with_tracking_blocks_and_records(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with pytest.raises(DataContractViolationError):
+        with mlflow.start_run() as run:
+            validate_batch_with_tracking(build_corrupted_batch(), batch_name="corrupted")
+
+    finished = mlflow.get_run(run.info.run_id)
+    assert finished.info.status == "FAILED"
+    assert finished.data.tags["ingestion_gate.corrupted"] == "BLOCKED"
+    assert finished.data.metrics["contract_violations_corrupted"] >= 6
+
+
+def test_validate_batch_with_tracking_passes_clean_batch(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    clean = build_corrupted_batch().iloc[[0]].assign(Age=30)
+    with mlflow.start_run() as run:
+        validate_batch_with_tracking(clean, batch_name="clean")
+
+    finished = mlflow.get_run(run.info.run_id)
+    assert finished.data.tags["ingestion_gate.clean"] == "PASSED"
+    assert finished.data.metrics["contract_violations_clean"] == 0
 
 
 def test_run_pipeline_returns_summary(tmp_path):

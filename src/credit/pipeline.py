@@ -33,6 +33,7 @@ from src.credit.observability import (
     log_pipeline_artifacts,
     setup_mlflow,
     track_stage_latency,
+    validate_batch_with_tracking,
 )
 
 
@@ -91,6 +92,13 @@ def run_pipeline(tracking_uri: str = DEFAULT_TRACKING_URI) -> dict[str, str | fl
             prod_drifted = simulate_production_drift()
             processed_rows["production_drifted"] = len(prod_drifted)
         latencies["simulation"] = s4["duration"]
+
+        # --- Estágio 4b: Ingestion Gate no lote de produção ---
+        # Em produção, o lote que chega é o dado menos confiável do sistema; ele
+        # passa pelo mesmo contrato do treino antes de qualquer inferência.
+        with track_stage_latency("production_ingestion_gate") as s4b:
+            validate_batch_with_tracking(prod_drifted, batch_name="production")
+        latencies["production_ingestion_gate"] = s4b["duration"]
 
         # --- Estágio 5: Detecção de Drift e Relatórios ---
         with track_stage_latency("drift_detection") as s5:

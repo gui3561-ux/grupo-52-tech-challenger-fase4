@@ -19,6 +19,7 @@ import mlflow
 import pandas as pd
 
 from src.credit import config as C
+from src.credit.data.contracts import DataContractViolationError, validate_credit_data
 
 # Desabilita hints invasivos do agente MLflow
 os.environ["MLFLOW_DISABLE_AGENT_HINT"] = "1"
@@ -87,6 +88,31 @@ def track_stage_latency(stage_name: str) -> Generator[dict[str, float], None, No
         elapsed = time.perf_counter() - start
         result["duration"] = round(elapsed, 4)
         logger.info("<<< Concluído estágio: [%s] em %.4f segundos", stage_name, elapsed)
+
+
+def validate_batch_with_tracking(df: pd.DataFrame, batch_name: str) -> pd.DataFrame:
+    """Passa um lote pelo contrato Pandera e registra o resultado no MLflow.
+
+    O contrato sozinho só levanta exceção; sem este registro, um bloqueio de
+    ingestão não aparece no dashboard. Grava `contract_violations_<lote>` e a tag
+    `ingestion_gate.<lote>` = PASSED/BLOCKED. Em caso de bloqueio, re-levanta a
+    exceção: o pipeline deve parar, não seguir com dados inválidos.
+    """
+    try:
+        validated = validate_credit_data(df)
+    except DataContractViolationError as exc:
+        violations = len(exc.failure_cases) if exc.failure_cases is not None else 1
+        logger.error("Ingestion gate BLOQUEOU o lote '%s': %d violação(ões)", batch_name, violations)
+        if mlflow.active_run() is not None:
+            mlflow.log_metric(f"contract_violations_{batch_name}", violations)
+            mlflow.set_tag(f"ingestion_gate.{batch_name}", "BLOCKED")
+        raise
+
+    logger.info("Ingestion gate aprovou o lote '%s' (%d linhas)", batch_name, len(validated))
+    if mlflow.active_run() is not None:
+        mlflow.log_metric(f"contract_violations_{batch_name}", 0)
+        mlflow.set_tag(f"ingestion_gate.{batch_name}", "PASSED")
+    return validated
 
 
 def log_operational_metrics(
