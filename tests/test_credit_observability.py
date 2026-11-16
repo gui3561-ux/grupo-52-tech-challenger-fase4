@@ -10,6 +10,8 @@ from src.credit.observability import (
     setup_mlflow,
     track_stage_latency,
 )
+from src.credit.data.contracts import DataContractViolationError, build_corrupted_batch
+from src.credit.observability import validate_batch_with_tracking
 from src.credit.pipeline import run_pipeline
 
 
@@ -53,11 +55,124 @@ def test_log_operational_metrics_calculation(tmp_path, monkeypatch):
     assert metrics["model_roc_auc"] == 0.76
 
 
+def test_log_operational_metrics_flags_performance_degradation(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with mlflow.start_run() as run:
+        metrics = log_operational_metrics(
+            latencies={"validation": 0.05},
+            processed_rows={"reference": 700},
+            eval_metrics={"roc_auc": 0.85, "accuracy": 0.78},
+            production_metrics={"roc_auc": 0.58, "accuracy": 0.63},
+        )
+
+    assert metrics["production_roc_auc"] == 0.58
+    assert metrics["roc_auc_drop"] == 0.27
+    tags = mlflow.get_run(run.info.run_id).data.tags
+    assert tags["pipeline.performance_alert"] == "DEGRADED"
+
+
+def test_log_operational_metrics_without_production_skips_performance_tag(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with mlflow.start_run() as run:
+        metrics = log_operational_metrics(
+            latencies={"validation": 0.05},
+            processed_rows={"reference": 700},
+            eval_metrics={"roc_auc": 0.85},
+        )
+
+    assert "roc_auc_drop" not in metrics
+    assert "pipeline.performance_alert" not in mlflow.get_run(run.info.run_id).data.tags
+
+
+def test_track_stage_latency_records_resource_usage(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with mlflow.start_run() as run:
+        with track_stage_latency("busy_stage") as stage:
+            sum(i * i for i in range(200_000))
+
+    assert stage["memory_rss_mb"] > 0
+    assert stage["cpu_percent"] >= 0
+    metrics = mlflow.get_run(run.info.run_id).data.metrics
+    assert "memory_rss_mb_busy_stage" in metrics
+    assert "cpu_percent_busy_stage" in metrics
+
+
+def test_track_stage_latency_tags_failed_stage(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with pytest.raises(ValueError):
+        with mlflow.start_run() as run:
+            with track_stage_latency("data_validation"):
+                raise ValueError("lote corrompido")
+
+    finished = mlflow.get_run(run.info.run_id)
+    assert finished.info.status == "FAILED"
+    assert finished.data.tags["pipeline.status"] == "failed"
+    assert finished.data.tags["pipeline.failed_stage"] == "data_validation"
+
+
+def test_run_pipeline_records_failure_and_reraises(tmp_path, monkeypatch):
+    import mlflow
+    from src.credit import pipeline
+
+    def broken_loader(**_):
+        raise RuntimeError("falha simulada na ingestão")
+
+    monkeypatch.setattr(pipeline, "load_base_dataset", broken_loader)
+    tracking_uri = f"sqlite:///{tmp_path}/pipeline_fail.db"
+
+    with pytest.raises(RuntimeError):
+        pipeline.run_pipeline(tracking_uri=tracking_uri)
+
+    runs = mlflow.search_runs(experiment_names=["credit-scoring-mlops"])
+    assert len(runs) == 1
+    assert runs.iloc[0]["status"] == "FAILED"
+    assert runs.iloc[0]["tags.pipeline.failed_stage"] == "data_validation"
+
+
+def test_validate_batch_with_tracking_blocks_and_records(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with pytest.raises(DataContractViolationError):
+        with mlflow.start_run() as run:
+            validate_batch_with_tracking(build_corrupted_batch(), batch_name="corrupted")
+
+    finished = mlflow.get_run(run.info.run_id)
+    assert finished.info.status == "FAILED"
+    assert finished.data.tags["ingestion_gate.corrupted"] == "BLOCKED"
+    assert finished.data.metrics["contract_violations_corrupted"] >= 6
+
+
+def test_validate_batch_with_tracking_passes_clean_batch(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    clean = build_corrupted_batch().iloc[[0]].assign(Age=30)
+    with mlflow.start_run() as run:
+        validate_batch_with_tracking(clean, batch_name="clean")
+
+    finished = mlflow.get_run(run.info.run_id)
+    assert finished.data.tags["ingestion_gate.clean"] == "PASSED"
+    assert finished.data.metrics["contract_violations_clean"] == 0
+
+
 def test_run_pipeline_returns_summary(tmp_path):
-    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/pipeline_test.db")
-    summary = run_pipeline()
+    summary = run_pipeline(tracking_uri=f"sqlite:///{tmp_path}/pipeline_test.db")
     assert "run_id" in summary
     assert summary["total_latency_seconds"] > 0
     assert summary["roc_auc_holdout"] > 0.5
     assert summary["drift_critical_alerts"] >= 0
+    import mlflow
+
+    tags = mlflow.get_run(summary["run_id"]).data.tags
+    assert "infra.platform" in tags and "infra.cpu_count" in tags
+    assert summary["roc_auc_drop"] == round(summary["roc_auc_holdout"] - summary["roc_auc_production"], 4)
 

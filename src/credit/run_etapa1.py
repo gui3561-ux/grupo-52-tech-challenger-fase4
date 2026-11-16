@@ -12,16 +12,17 @@ Uso:
 
 from __future__ import annotations
 
+import mlflow
 import pandas as pd
 
 from src.credit import config as C
 from src.credit.data.contracts import (
     DataContractViolationError,
     build_corrupted_batch,
-    validate_credit_data,
 )
 from src.credit.data.preprocess import load_base_dataset, make_reference_production_split
 from src.credit.model.baseline import train_baseline
+from src.credit.observability import setup_mlflow, track_stage_latency, validate_batch_with_tracking
 
 
 def main() -> None:
@@ -44,8 +45,13 @@ def main() -> None:
     print(f"-> Lote de teste gerado com {len(corrupted_batch)} amostras contendo violações deliberadas:")
     print("   (menores de 18 anos, limites negativos, prazos zerados, categorias não homologadas e nulos)")
 
+    # O bloqueio também é registrado como run FAILED no MLflow, para que a
+    # interceptação fique como evidência no dashboard, e não só no terminal.
+    setup_mlflow()
     try:
-        validate_credit_data(corrupted_batch)
+        with mlflow.start_run(run_name="ingestion_gate_corrupted_batch_demo"):
+            with track_stage_latency("corrupted_batch_ingestion_gate"):
+                validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
         print("✗ FALHA DE SEGURANÇA: O lote corrompido passou sem ser interceptado!")
     except DataContractViolationError as exc:
         print("\n>>> SUCESSO: Contrato Pandera interceptou os dados inválidos e bloqueou a ingestão! <<<")

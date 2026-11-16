@@ -27,16 +27,23 @@ from src.credit.drift.report import build_drift_report
 from src.credit.model.baseline import train_baseline
 from src.credit.observability import (
     logger,
+    DEFAULT_TRACKING_URI,
+    log_infra_context,
     log_operational_metrics,
+    ROC_AUC_DROP_ALERT_THRESHOLD,
     log_pipeline_artifacts,
     setup_mlflow,
     track_stage_latency,
+    validate_batch_with_tracking,
 )
 
 
-def run_pipeline() -> dict[str, str | float]:
-    """Executa o pipeline completo de ponta a ponta e registra na run do MLflow."""
-    setup_mlflow()
+def run_pipeline(tracking_uri: str = DEFAULT_TRACKING_URI) -> dict[str, str | float]:
+    """Executa o pipeline completo de ponta a ponta e registra na run do MLflow.
+
+    `tracking_uri` é parametrizável para que testes não escrevam no mlflow.db do projeto.
+    """
+    setup_mlflow(tracking_uri)
 
     logger.info("=================================================================")
     logger.info("   INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   ")
@@ -48,6 +55,7 @@ def run_pipeline() -> dict[str, str | float]:
     with mlflow.start_run(run_name="credit_scoring_mlops_pipeline") as run:
         run_id = run.info.run_id
         logger.info("MLflow Run iniciada com ID: %s", run_id)
+        log_infra_context()
 
         # Log de parâmetros de governança e configuração
         mlflow.log_params(
@@ -59,6 +67,7 @@ def run_pipeline() -> dict[str, str | float]:
                 "model_algorithm": "XGBClassifier",
                 "validation_framework": "Pandera",
                 "drift_framework": "Evidently AI + SciPy (PSI/KS)",
+                "roc_auc_drop_alert_threshold": ROC_AUC_DROP_ALERT_THRESHOLD,
             }
         )
 
@@ -86,6 +95,13 @@ def run_pipeline() -> dict[str, str | float]:
             processed_rows["production_drifted"] = len(prod_drifted)
         latencies["simulation"] = s4["duration"]
 
+        # --- Estágio 4b: Ingestion Gate no lote de produção ---
+        # Em produção, o lote que chega é o dado menos confiável do sistema; ele
+        # passa pelo mesmo contrato do treino antes de qualquer inferência.
+        with track_stage_latency("production_ingestion_gate") as s4b:
+            validate_batch_with_tracking(prod_drifted, batch_name="production")
+        latencies["production_ingestion_gate"] = s4b["duration"]
+
         # --- Estágio 5: Detecção de Drift e Relatórios ---
         with track_stage_latency("drift_detection") as s5:
             drift_results = build_drift_report()
@@ -99,6 +115,7 @@ def run_pipeline() -> dict[str, str | float]:
             processed_rows=processed_rows,
             drift_stats_df=drift_stats_df,
             eval_metrics=train_metrics,
+            production_metrics=drift_results["perf_production"],
         )
         log_pipeline_artifacts()
 
@@ -113,6 +130,8 @@ def run_pipeline() -> dict[str, str | float]:
             "total_latency_seconds": round(sum(latencies.values()), 4),
             "roc_auc_holdout": train_metrics["roc_auc"],
             "drift_critical_alerts": logged_metrics["drift_critical_alerts_count"],
+            "roc_auc_production": logged_metrics["production_roc_auc"],
+            "roc_auc_drop": logged_metrics["roc_auc_drop"],
         }
 
 
