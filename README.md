@@ -52,10 +52,13 @@ O projeto é gerenciado pelo [`uv`](https://docs.astral.sh/uv/) garantindo repro
 git clone https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4.git
 cd grupo-98-tech-challenger-fase4
 
-# 2. Sincronizar o ambiente virtual (instala Pandera, Scikit-Learn, Evidently, MLflow, etc.)
+# 2. (Somente macOS) O XGBoost depende do runtime OpenMP, que não vem com o sistema
+brew install libomp
+
+# 3. Sincronizar o ambiente virtual (instala Pandera, Scikit-Learn, Evidently, MLflow, etc.)
 uv sync
 
-# 3. (Opcional) O CSV com 5.000 linhas e target 'Risk' já está versionado; este comando não o sobrescreve
+# 4. (Opcional) O CSV com 5.000 linhas e target 'Risk' já está versionado; este comando não o sobrescreve
 uv run python -m src.credit.data.make_dataset
 ```
 
@@ -68,8 +71,8 @@ O repositório oferece scripts dedicados para cada entrega avaliada pela banca:
 | **Etapa 1** | `uv run python -m src.credit.run_etapa1` | Valida contrato Pandera, treina o baseline e demonstra a interceptação e bloqueio de lote corrupto. |
 | **Etapa 2** | `uv run python -m src.credit.run_etapa2` | Simula produção com choque macroeconômico, calcula testes de drift (PSI/KS) e gera relatórios interativos. |
 | **Etapa 3** | `uv run python -m src.credit.pipeline` | Orquestra o pipeline unificado de ponta a ponta registrando métricas de latência, saúde e artefatos no MLflow. |
-| **MLflow UI**| `uv run mlflow ui` | Abre a interface de visualização do MLflow em `http://127.0.0.1:5000` para auditoria dos experimentos e artefatos. |
-| **Testes** | `uv run pytest tests/` | Executa a suíte completa de testes automatizados unitários e de integração. |
+| **MLflow UI**| `uv run mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5001` | Abre a interface do MLflow em `http://127.0.0.1:5001` (no macOS a porta 5000 é ocupada pelo AirPlay). Na UI, selecione o modo **Model training** e o experimento `credit-scoring-mlops`. |
+| **Testes** | `uv run pytest tests/` | Executa a suíte de testes automatizados. Os testes da Fase 3 são pulados se o extra `legacy` (tensorflow) não estiver instalado. |
 
 ---
 
@@ -124,13 +127,19 @@ Implementada em `src/credit/observability.py` e integrada em `src/credit/pipelin
 - **Tracking Server:** Configurado sobre backend SQLite seguro (`sqlite:///mlflow.db`) e diretório `./mlruns`.
 - **Logs Estruturados:** Todas as execuções gravam logs padronizados com timestamps, níveis de severidade e latência por etapa no arquivo operacional `reports/pipeline_execution.log`.
 - **Métricas de Saúde Registradas no MLflow:**
-  - Latência por estágio: `latency_validation_seconds`, `latency_ingestion_gate_seconds`, `latency_split_seconds`, `latency_training_seconds`, `latency_simulation_seconds`, `latency_drift_detection_seconds` e `latency_total_seconds`.
+  - Latência por estágio: `latency_validation_seconds`, `latency_ingestion_gate_seconds`, `latency_split_seconds`, `latency_training_seconds`, `latency_simulation_seconds`, `latency_production_ingestion_gate_seconds`, `latency_drift_detection_seconds` e `latency_total_seconds`.
   - Volume processado: `rows_raw_base`, `rows_reference`, `rows_production_raw` e `rows_production_drifted`.
   - Ingestion Gate (lote corrompido submetido a cada run): `contract_rejected_batches`, `contract_rejected_rows` e `contract_violations_count`.
   - Contagem de alertas críticos: `drift_critical_alerts_count` (contagem de variáveis com $\text{PSI} \ge 0.25$).
-- **Status da Execução:** tags `pipeline.status` (`success`/`failed`) e `pipeline.drift_alert` (`OK`/`CRITICAL`). Em falha, a run também recebe `pipeline.failed_stage` e `pipeline.error`, e o log de execução é anexado como artefato.
-- **Contrato na Produção:** o dataset de Produção com drift passa pelo mesmo contrato Pandera antes de qualquer predição.
-  - Métricas de desempenho do modelo: `model_roc_auc`, `model_accuracy` e `model_f1_bad_risk`.
+  - Métricas de desempenho do modelo (holdout): `model_roc_auc`, `model_accuracy` e `model_f1_bad`.
+  - Métricas de desempenho em produção (Concept Drift): `production_roc_auc`, `production_accuracy` e `roc_auc_drop` (queda de ROC-AUC do holdout para a produção).
+  - Ingestion Gate no lote de produção: `contract_violations_production` (0 quando o lote atende ao contrato). O lote que chega em produção passa pelo mesmo contrato Pandera do treino antes de qualquer inferência.
+  - Saúde da infraestrutura por estágio: `cpu_percent_<estágio>` (tempo de CPU / tempo de parede; acima de 100% indica uso de mais de um núcleo) e `memory_rss_mb_<estágio>` (memória residente do processo ao fim do estágio). O ambiente de execução fica registrado nas tags `infra.platform`, `infra.python_version`, `infra.cpu_count` e `infra.total_memory_gb`, para distinguir regressão de código de diferença de máquina.
+- **Tags de Alerta (filtráveis na UI do MLflow):**
+  - `ingestion_gate.<lote>`: `PASSED` ou `BLOCKED`. A demonstração da Etapa 1 (`run_etapa1`) registra o lote corrompido como uma run `FAILED` (`ingestion_gate_corrupted_batch_demo`), deixando o bloqueio como evidência no dashboard.
+  - `pipeline.drift_alert`: `CRITICAL` se alguma feature tem $\text{PSI} \ge 0.25$ (os dados de entrada mudaram).
+  - `pipeline.performance_alert`: `DEGRADED` se `roc_auc_drop` $\ge 0.05$ (a mudança afetou a qualidade do risco). O limiar é registrado como parâmetro da run (`roc_auc_drop_alert_threshold`).
+  - `pipeline.status`: `success` ou `failed`; em caso de falha, `pipeline.failed_stage` indica o estágio que quebrou (ex.: `data_validation` quando o contrato Pandera bloqueia um lote) e `pipeline.error` traz o tipo e a mensagem do erro. O log operacional, com o traceback, é anexado como artefato da run.
 - **Persistência de Artefatos:** Cada run anexa automaticamente o modelo serializado (`models/credit_baseline.joblib`), as métricas JSON, o log de execução e os relatórios interativos HTML e CSV do Evidently.
 
 ---
@@ -234,7 +243,7 @@ grupo-98-tech-challenger-fase4/
 │   ├── reference/                 <- Dataset de treino/baseline (3.500 registros: 700 reais + 2.800 sintéticos)
 │   └── production/                <- Datasets de produção (com drift injetado)
 ├── models/
-│   ├── credit_baseline.joblib     <- Modelo XGBoost serializado
+│   ├── credit_baseline.joblib     <- Pipeline (OneHotEncoder + XGBoost) serializado
 │   └── credit_baseline_metrics.json <- Hiperparâmetros e métricas de validação
 ├── reports/
 │   ├── drift_report.html          <- Relatório interativo do Evidently AI
@@ -247,13 +256,14 @@ grupo-98-tech-challenger-fase4/
 │       ├── data/
 │       │   ├── contracts.py       <- Esquema e regras estritas do Pandera
 │       │   ├── make_dataset.py    <- Download e pareamento de target do German Credit
+│       │   ├── augment_dataset.py <- Aumento para 5.000 linhas (cópula gaussiana por classe)
 │       │   ├── preprocess.py      <- Carga validada e divisão em referência (70%) e produção (30%)
 │       │   └── simulate_drift.py  <- Injeção de choques de inflação, deslocamento etário e recessão
 │       ├── model/
-│       │   └── baseline.py        <- Treinamento, avaliação e predição (pipeline Scikit-Learn + XGBoost)
+│       │   └── baseline.py        <- Treinamento (OneHotEncoder + XGBoost), avaliação e predição
 │       ├── drift/
 │       │   ├── detect.py          <- Cálculo de PSI e teste KS por feature
-│       │   └── report.py          <- Relatórios Evidently AI (HTML), CSV e sumário de drift
+│       │   └── report.py          <- Relatórios Evidently AI (HTML), CSV, sumário e performance em produção (Concept Drift)
 │       ├── observability.py       <- Configuração de logging e integração com MLflow
 │       ├── pipeline.py            <- Orquestrador unificado de ponta a ponta
 │       ├── run_etapa1.py          <- Script executável de validação de contratos e bloqueio

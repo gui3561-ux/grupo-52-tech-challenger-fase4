@@ -1,137 +1,77 @@
+"""Aplicação FastAPI do pipeline de Credit Scoring.
+
+Uso (a partir da raiz do projeto, pois os caminhos de `src/credit/config.py` são relativos):
+    uv run uvicorn src.api.main:app --reload --port 8000
+
+Documentação interativa em http://127.0.0.1:8000/docs
+"""
+
 from __future__ import annotations
 
-import math
-import time
-from contextlib import asynccontextmanager
-from pathlib import Path
+import json
+import os
 
-import psutil
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse, PlainTextResponse
-from pydantic import BaseModel, Field, field_validator
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
-from src.model.artifacts import load_artifacts, predict_next_close
-from src.settings import HORIZON, MODELS_DIR, TICKER, WINDOW_SIZE
+from src.credit.data.contracts import DataContractViolationError
+from src.credit.observability import DEFAULT_TRACKING_URI
 
+from src.api.execution import ExecutionInProgressError, Executor
+from src.api.routers import drift, pipeline
+from src.api.stages import MissingPrerequisiteError
 
-class PredictRequest(BaseModel):
-    prices: list[float] = Field(
-        ...,
-        min_length=WINDOW_SIZE,
-        max_length=WINDOW_SIZE,
-        description="60 fechamentos diários consecutivos, do mais antigo ao mais recente",
-    )
-
-    @field_validator("prices")
-    @classmethod
-    def finite_prices(cls, value: list[float]) -> list[float]:
-        if any(item is None or not math.isfinite(item) for item in value):
-            raise ValueError("todos os preços devem ser números finitos")
-        return value
+# Limite de violações devolvidas no corpo do 422: um lote de produção inteiro pode
+# gerar milhares (ex.: ruído alto zerando o valor de crédito).
+MAX_VIOLATIONS_IN_RESPONSE = 100
+VIOLATION_COLUMNS = ["column", "check", "failure_case", "index"]
 
 
-class PredictResponse(BaseModel):
-    ticker: str = Field(description="Símbolo da ação prevista")
-    horizon: str = Field(description="Horizonte da previsão (próximo pregão)")
-    predicted_close: float = Field(description="Fechamento previsto para D+1")
+def _contract_violation_body(exc: DataContractViolationError) -> dict:
+    failures = exc.failure_cases
+    violations = []
+    if failures is not None:
+        cols = [c for c in VIOLATION_COLUMNS if c in failures.columns]
+        violations = json.loads(failures[cols].head(MAX_VIOLATIONS_IN_RESPONSE).to_json(orient="records"))
+    return {
+        "message": str(exc),
+        "violations_count": len(failures) if failures is not None else 1,
+        "violations": violations,
+    }
 
 
-class PredictMetrics:
-    def __init__(self) -> None:
-        self.predict_count = 0
-        self.latency_sum = 0.0
+def register_exception_handlers(app: FastAPI) -> None:
+    @app.exception_handler(ExecutionInProgressError)
+    def _busy(_: Request, exc: ExecutionInProgressError) -> JSONResponse:
+        return JSONResponse(status_code=409, content={"detail": str(exc)})
 
-    def observe(self, seconds: float) -> None:
-        self.predict_count += 1
-        self.latency_sum += seconds
+    @app.exception_handler(MissingPrerequisiteError)
+    def _missing(_: Request, exc: MissingPrerequisiteError) -> JSONResponse:
+        detail = {"message": str(exc), "missing": exc.missing, "run_first": exc.run_first}
+        return JSONResponse(status_code=409, content={"detail": detail})
 
-
-class ArtifactPredictor:
-    def __init__(self, model, scaler) -> None:
-        self._model = model
-        self._scaler = scaler
-
-    def predict(self, prices: list[float]) -> float:
-        return predict_next_close(self._model, self._scaler, prices)
+    @app.exception_handler(DataContractViolationError)
+    def _contract(_: Request, exc: DataContractViolationError) -> JSONResponse:
+        return JSONResponse(status_code=422, content={"detail": _contract_violation_body(exc)})
 
 
-def load_predictor(models_dir: Path) -> ArtifactPredictor | None:
-    try:
-        model, scaler = load_artifacts(models_dir)
-    except Exception:
-        return None
-    return ArtifactPredictor(model, scaler)
-
-
-def _prometheus_metrics(metrics: PredictMetrics) -> str:
-    process = psutil.Process()
-    cpu = process.cpu_times()
-    rss = process.memory_info().rss
-    lines = [
-        "# HELP predict_requests_total Total de previsoes D+1 servidas",
-        "# TYPE predict_requests_total counter",
-        f"predict_requests_total {metrics.predict_count}",
-        "# HELP predict_latency_seconds Latencia acumulada das previsoes",
-        "# TYPE predict_latency_seconds summary",
-        f"predict_latency_seconds_sum {metrics.latency_sum}",
-        f"predict_latency_seconds_count {metrics.predict_count}",
-        "# HELP process_cpu_seconds_total Tempo de CPU do processo",
-        "# TYPE process_cpu_seconds_total counter",
-        f"process_cpu_seconds_total {cpu.user + cpu.system}",
-        "# HELP process_resident_memory_bytes Memoria RSS do processo",
-        "# TYPE process_resident_memory_bytes gauge",
-        f"process_resident_memory_bytes {rss}",
-        "",
-    ]
-    return "\n".join(lines)
-
-
-def create_app(models_dir: Path | None = None) -> FastAPI:
-    directory = models_dir or MODELS_DIR
-
-    @asynccontextmanager
-    async def lifespan(app: FastAPI):
-        app.state.predictor = load_predictor(directory)
-        app.state.metrics = PredictMetrics()
-        yield
-
+def create_app(tracking_uri: str | None = None) -> FastAPI:
     app = FastAPI(
-        title="PETR4 LSTM API",
-        description="Recebe 60 fechamentos históricos e devolve o fechamento previsto de PETR4.SA no próximo pregão (D+1).",
-        lifespan=lifespan,
+        title="Credit Scoring MLOps API",
+        version="0.1.0",
+        description=(
+            "Simulação, detecção e visualização de data drift e execução do pipeline de "
+            "Credit Scoring (Tech Challenge Fase 4 — Grupo 98)."
+        ),
     )
+    app.state.executor = Executor(tracking_uri or os.environ.get("MLFLOW_TRACKING_URI", DEFAULT_TRACKING_URI))
+    app.include_router(pipeline.router)
+    app.include_router(drift.router)
+    register_exception_handlers(app)
 
-    @app.get("/health")
-    def health() -> dict[str, str]:
-        return {"status": "ok"}
-
-    @app.get("/ready")
-    def ready() -> JSONResponse:
-        predictor = getattr(app.state, "predictor", None)
-        if predictor is None:
-            return JSONResponse(status_code=503, content={"status": "not_ready"})
-        return JSONResponse(status_code=200, content={"status": "ready"})
-
-    @app.get("/metrics")
-    def metrics() -> PlainTextResponse:
-        current: PredictMetrics = getattr(app.state, "metrics", PredictMetrics())
-        return PlainTextResponse(_prometheus_metrics(current), media_type="text/plain; version=0.0.4")
-
-    @app.post("/predict", response_model=PredictResponse)
-    def predict(body: PredictRequest) -> PredictResponse:
-        predictor: ArtifactPredictor | None = getattr(app.state, "predictor", None)
-        if predictor is None:
-            raise HTTPException(status_code=503, detail="Modelo não está pronto")
-        started = time.perf_counter()
-        try:
-            predicted = predictor.predict(body.prices)
-        except HTTPException:
-            raise
-        except Exception:
-            raise HTTPException(status_code=500, detail="Erro interno ao gerar a previsão") from None
-        elapsed = time.perf_counter() - started
-        app.state.metrics.observe(elapsed)
-        return PredictResponse(ticker=TICKER, horizon=HORIZON, predicted_close=predicted)
+    @app.get("/health", tags=["health"], summary="Saúde da API")
+    def health() -> dict:
+        return {"status": "ok", "busy": app.state.executor.busy}
 
     return app
 

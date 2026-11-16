@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import logging
 import os
+import platform
 import time
 from contextlib import contextmanager
 from pathlib import Path
@@ -17,8 +18,10 @@ from typing import Any, Generator
 
 import mlflow
 import pandas as pd
+import psutil
 
 from src.credit import config as C
+from src.credit.data.contracts import DataContractViolationError, validate_credit_data
 
 # Desabilita hints invasivos do agente MLflow
 os.environ["MLFLOW_DISABLE_AGENT_HINT"] = "1"
@@ -26,6 +29,12 @@ os.environ["MLFLOW_DISABLE_AGENT_HINT"] = "1"
 EXPERIMENT_NAME = "credit-scoring-mlops"
 DEFAULT_TRACKING_URI = "sqlite:///mlflow.db"
 LOG_FILE = Path("reports") / "pipeline_execution.log"
+
+# Queda máxima tolerada de ROC-AUC (holdout -> produção) antes de marcar a run
+# como degradada. Data drift (PSI) mostra que a entrada mudou; esta queda mostra
+# que a mudança afetou o negócio. 0.05 é uma tolerância prática comum para
+# scoring; deve ser recalibrada com o time de risco.
+ROC_AUC_DROP_ALERT_THRESHOLD = 0.05
 
 
 def configure_logger(name: str = "credit.pipeline", level: int = logging.INFO) -> logging.Logger:
@@ -65,17 +74,84 @@ def setup_mlflow(tracking_uri: str = DEFAULT_TRACKING_URI) -> None:
 def track_stage_latency(stage_name: str) -> Generator[dict[str, float], None, None]:
     """Context manager para cronometrar a duração de execução de um estágio do pipeline."""
     result: dict[str, float] = {"duration": 0.0}
+    process = psutil.Process()
+    cpu_before = process.cpu_times()
     start = time.perf_counter()
     logger.info(">>> Iniciando estágio: [%s]", stage_name)
     try:
         yield result
     except Exception:
-        logger.error("!!! Falha no estágio: [%s]", stage_name)
+        # Sem isso a run aparece só como FAILED no MLflow, sem dizer onde
+        # quebrou. As tags permitem filtrar falhas por estágio na UI.
+        logger.exception("!!! Falha no estágio: [%s]", stage_name)
+        if mlflow.active_run() is not None:
+            mlflow.set_tag("pipeline.status", "failed")
+            mlflow.set_tag("pipeline.failed_stage", stage_name)
         raise
     finally:
         elapsed = time.perf_counter() - start
         result["duration"] = round(elapsed, 4)
-        logger.info("<<< Concluído estágio: [%s] em %.4f segundos", stage_name, elapsed)
+
+        # Saúde da infraestrutura por estágio: memória residente do processo e
+        # uso de CPU (tempo de CPU / tempo de parede; >100% = mais de um núcleo).
+        # Um estágio que passa a consumir muito mais memória ou CPU entre runs é
+        # sinal de dado maior que o esperado ou de regressão de código.
+        cpu_after = process.cpu_times()
+        cpu_seconds = (cpu_after.user - cpu_before.user) + (cpu_after.system - cpu_before.system)
+        result["cpu_percent"] = round(100 * cpu_seconds / elapsed, 1) if elapsed > 0 else 0.0
+        result["memory_rss_mb"] = round(process.memory_info().rss / 1024**2, 1)
+        if mlflow.active_run() is not None:
+            mlflow.log_metric(f"cpu_percent_{stage_name}", result["cpu_percent"])
+            mlflow.log_metric(f"memory_rss_mb_{stage_name}", result["memory_rss_mb"])
+
+        logger.info(
+            "<<< Concluído estágio: [%s] em %.4f segundos | CPU %.1f%% | RSS %.1f MB",
+            stage_name,
+            elapsed,
+            result["cpu_percent"],
+            result["memory_rss_mb"],
+        )
+
+
+def log_infra_context() -> None:
+    """Registra como tags o ambiente em que a run executou.
+
+    Sem isso não dá para saber se uma mudança de latência ou memória entre runs
+    veio do código ou da máquina (ex.: Mac M1 local vs. container Linux).
+    """
+    mlflow.set_tags(
+        {
+            "infra.platform": platform.platform(),
+            "infra.python_version": platform.python_version(),
+            "infra.cpu_count": str(os.cpu_count()),
+            "infra.total_memory_gb": str(round(psutil.virtual_memory().total / 1024**3, 1)),
+        }
+    )
+
+
+def validate_batch_with_tracking(df: pd.DataFrame, batch_name: str) -> pd.DataFrame:
+    """Passa um lote pelo contrato Pandera e registra o resultado no MLflow.
+
+    O contrato sozinho só levanta exceção; sem este registro, um bloqueio de
+    ingestão não aparece no dashboard. Grava `contract_violations_<lote>` e a tag
+    `ingestion_gate.<lote>` = PASSED/BLOCKED. Em caso de bloqueio, re-levanta a
+    exceção: o pipeline deve parar, não seguir com dados inválidos.
+    """
+    try:
+        validated = validate_credit_data(df)
+    except DataContractViolationError as exc:
+        violations = len(exc.failure_cases) if exc.failure_cases is not None else 1
+        logger.error("Ingestion gate BLOQUEOU o lote '%s': %d violação(ões)", batch_name, violations)
+        if mlflow.active_run() is not None:
+            mlflow.log_metric(f"contract_violations_{batch_name}", violations)
+            mlflow.set_tag(f"ingestion_gate.{batch_name}", "BLOCKED")
+        raise
+
+    logger.info("Ingestion gate aprovou o lote '%s' (%d linhas)", batch_name, len(validated))
+    if mlflow.active_run() is not None:
+        mlflow.log_metric(f"contract_violations_{batch_name}", 0)
+        mlflow.set_tag(f"ingestion_gate.{batch_name}", "PASSED")
+    return validated
 
 
 def log_operational_metrics(
@@ -84,6 +160,7 @@ def log_operational_metrics(
     drift_stats_df: Any | None = None,
     eval_metrics: dict[str, Any] | None = None,
     contract_metrics: dict[str, int] | None = None,
+    production_metrics: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Registra no MLflow métricas operacionais, parâmetros e contagem de alertas.
 
@@ -115,6 +192,23 @@ def log_operational_metrics(
                 mlflow.log_metric(key, val)
                 logged_metrics[key] = val
 
+    # 3b. Performance em produção (Concept Drift). Sem isso o dashboard só mostra
+    # o modelo "saudável" do holdout e a degradação silenciosa fica invisível.
+    performance_degraded = False
+    if production_metrics:
+        for metric_name in ["roc_auc", "accuracy"]:
+            if metric_name in production_metrics:
+                key = f"production_{metric_name}"
+                val = float(production_metrics[metric_name])
+                mlflow.log_metric(key, val)
+                logged_metrics[key] = val
+
+        if eval_metrics and "roc_auc" in eval_metrics and "roc_auc" in production_metrics:
+            drop = round(float(eval_metrics["roc_auc"]) - float(production_metrics["roc_auc"]), 4)
+            mlflow.log_metric("roc_auc_drop", drop)
+            logged_metrics["roc_auc_drop"] = drop
+            performance_degraded = drop >= ROC_AUC_DROP_ALERT_THRESHOLD
+
     # 4. Resultado do Ingestion Gate (lotes/registros bloqueados pelo contrato)
     for key, val in (contract_metrics or {}).items():
         mlflow.log_metric(key, val)
@@ -140,6 +234,8 @@ def log_operational_metrics(
     # Tags de status
     mlflow.set_tag("pipeline.status", "success")
     mlflow.set_tag("pipeline.drift_alert", "CRITICAL" if critical_alerts > 0 else "OK")
+    if production_metrics:
+        mlflow.set_tag("pipeline.performance_alert", "DEGRADED" if performance_degraded else "OK")
 
     logger.info(
         "Métricas registradas no MLflow: latência total=%.4fs, alertas críticos de drift=%d",
