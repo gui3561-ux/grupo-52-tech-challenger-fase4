@@ -29,7 +29,7 @@ O objetivo deste projeto é construir a **Camada de Sustentação e Confiabilida
 ```mermaid
 flowchart LR
     A["Dados Brutos (German Credit)"] --> B["Contrato Pandera (Ingestion Gate)"]
-    B -->|Lote Válido| C["Treinamento Baseline (Random Forest)"]
+    B -->|Lote Válido| C["Treinamento Baseline (XGBoost)"]
     B -->|Lote Corrupto| X["DataContractViolationError (Bloqueio)"]
     C --> D["Simulação de Produção (Choque Inflacionário)"]
     D --> E["Evidently AI (PSI & KS Tests)"]
@@ -51,10 +51,13 @@ O projeto é gerenciado pelo [`uv`](https://docs.astral.sh/uv/) garantindo repro
 git clone https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4.git
 cd grupo-98-tech-challenger-fase4
 
-# 2. Sincronizar o ambiente virtual (instala Pandera, Scikit-Learn, Evidently, MLflow, etc.)
+# 2. (Somente macOS) O XGBoost depende do runtime OpenMP, que não vem com o sistema
+brew install libomp
+
+# 3. Sincronizar o ambiente virtual (instala Pandera, Scikit-Learn, Evidently, MLflow, etc.)
 uv sync
 
-# 3. (Opcional) O CSV com 5.000 linhas e target 'Risk' já está versionado; este comando não o sobrescreve
+# 4. (Opcional) O CSV com 5.000 linhas e target 'Risk' já está versionado; este comando não o sobrescreve
 uv run python -m src.credit.data.make_dataset
 ```
 
@@ -67,8 +70,8 @@ O repositório oferece scripts dedicados para cada entrega avaliada pela banca:
 | **Etapa 1** | `uv run python -m src.credit.run_etapa1` | Valida contrato Pandera, treina o baseline e demonstra a interceptação e bloqueio de lote corrupto. |
 | **Etapa 2** | `uv run python -m src.credit.run_etapa2` | Simula produção com choque macroeconômico, calcula testes de drift (PSI/KS) e gera relatórios interativos. |
 | **Etapa 3** | `uv run python -m src.credit.pipeline` | Orquestra o pipeline unificado de ponta a ponta registrando métricas de latência, saúde e artefatos no MLflow. |
-| **MLflow UI**| `uv run mlflow ui` | Abre a interface de visualização do MLflow em `http://127.0.0.1:5000` para auditoria dos experimentos e artefatos. |
-| **Testes** | `uv run pytest tests/` | Executa a suíte completa de testes automatizados unitários e de integração. |
+| **MLflow UI**| `uv run mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5001` | Abre a interface do MLflow em `http://127.0.0.1:5001` (no macOS a porta 5000 é ocupada pelo AirPlay). Na UI, selecione o modo **Model training** e o experimento `credit-scoring-mlops`. |
+| **Testes** | `uv run pytest tests/` | Executa a suíte de testes automatizados. Os testes da Fase 3 são pulados se o extra `legacy` (tensorflow) não estiver instalado. |
 
 ---
 
@@ -215,7 +218,7 @@ flowchart TD
 - **Concept Drift (Mudança em $P(Y \mid X)$):**
   Como as variáveis preditoras mudaram de escala e contexto socioeconômico, a correlação entre as features e o verdadeiro comportamento de adimplência mudou. Um empréstimo de valor elevado já não indicava necessariamente uma compra suntuária arriscada, mas sim a reposição inflacionária ordinária.
 - **Impacto no Desempenho do Modelo:**
-  O classificador baseline (*Random Forest*), cujas regras de partição e limites de decisão foram calibrados sobre o espaço de treino original, perdeu completamente a calibração de probabilidades:
+  O classificador baseline (*XGBoost*), cujas regras de partição e limites de decisão foram calibrados sobre o espaço de treino original, perdeu completamente a calibração de probabilidades:
   - **ROC-AUC em Holdout (Referência):** $0.8528$ (holdout com ~80% de linhas sintéticas; veja a nota de dados sintéticos na seção 2.3 — em linhas 100% reais o AUC é ≈ $0.70$).
   - **ROC-AUC em Produção:** $0.5757$ (modelo degradado para próximo de um classificador aleatório, $\Delta = -0.2771$).
   - **Acurácia Global:** Sofreu queda de $78.51\%$ para $63.27\%$.
@@ -238,7 +241,7 @@ grupo-98-tech-challenger-fase4/
 │   ├── reference/                 <- Dataset de treino/baseline (3.500 registros: 700 reais + 2.800 sintéticos)
 │   └── production/                <- Datasets de produção (com drift injetado)
 ├── models/
-│   ├── credit_baseline.joblib     <- Modelo Random Forest serializado
+│   ├── credit_baseline.joblib     <- Pipeline (OneHotEncoder + XGBoost) serializado
 │   └── credit_baseline_metrics.json <- Hiperparâmetros e métricas de validação
 ├── reports/
 │   ├── drift_report.html          <- Relatório interativo do Evidently AI
@@ -250,13 +253,14 @@ grupo-98-tech-challenger-fase4/
 │       ├── data/
 │       │   ├── contracts.py       <- Esquema e regras estritas do Pandera
 │       │   ├── make_dataset.py    <- Download e pareamento de target do German Credit
-│       │   └── split_dataset.py   <- Divisão em referência (70%) e produção (30%)
+│       │   ├── augment_dataset.py <- Aumento para 5.000 linhas (cópula gaussiana por classe)
+│       │   ├── preprocess.py      <- Divisão em referência (70%) e produção (30%)
+│       │   └── simulate_drift.py  <- Injeção de choques de inflação e deslocamento etário
 │       ├── model/
-│       │   ├── baseline.py        <- Treinamento, pipeline Scikit-Learn e avaliação
-│       │   └── evaluate_production.py <- Avaliação de desempenho sobre lote de produção
+│       │   └── baseline.py        <- Treinamento (OneHotEncoder + XGBoost), avaliação e predição
 │       ├── drift/
-│       │   ├── simulate_drift.py  <- Injeção de choques de inflação e deslocamento etário
-│       │   └── detect_drift.py    <- Execução de testes estatísticos com Evidently AI
+│       │   ├── detect.py          <- Cálculo de PSI e teste KS por feature
+│       │   └── report.py          <- Relatórios Evidently AI e performance em produção (Concept Drift)
 │       ├── observability.py       <- Configuração de logging e integração com MLflow
 │       ├── pipeline.py            <- Orquestrador unificado de ponta a ponta
 │       ├── run_etapa1.py          <- Script executável de validação de contratos e bloqueio
