@@ -53,7 +53,8 @@ def test_make_reference_production_split_stratification(tmp_path, monkeypatch):
             "Housing": ["own"] * 100,
             "Saving accounts": ["little"] * 100,
             "Checking account": ["little"] * 100,
-            "Credit amount": [2000] * 100,
+            # Valores distintos para não violar a regra de unicidade do contrato.
+            "Credit amount": list(range(2000, 2100)),
             "Duration": [12] * 100,
             "Purpose": ["radio/TV"] * 100,
             "Risk": risks,

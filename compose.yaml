@@ -1,13 +1,22 @@
+# `docker compose up --build` roda o pipeline de Credit Scoring uma vez e, se ele terminar
+# com sucesso, sobe a UI do MLflow em http://127.0.0.1:5001 lendo a mesma run.
+# Os dois serviços compartilham o volume `credit-work` (mlflow.db, mlruns/, reports/, models/).
 services:
-  api:
+  pipeline:
     build: .
+    volumes:
+      - credit-work:/work
+
+  mlflow:
+    build: .
+    command: ["mlflow", "server", "--backend-store-uri", "sqlite:////work/mlflow.db", "--host", "0.0.0.0", "--port", "5000"]
     ports:
-      - "8000:8000"
-    environment:
-      TF_CPP_MIN_LOG_LEVEL: "2"
-      CUDA_VISIBLE_DEVICES: "-1"
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
-      interval: 30s
-      timeout: 5s
-      retries: 5
+      - "5001:5000"   # no macOS a porta 5000 do host é ocupada pelo AirPlay
+    volumes:
+      - credit-work:/work
+    depends_on:
+      pipeline:
+        condition: service_completed_successfully
+
+volumes:
+  credit-work:

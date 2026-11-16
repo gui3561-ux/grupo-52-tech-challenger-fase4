@@ -24,20 +24,42 @@ def _psi_from_counts(expected_pct: np.ndarray, actual_pct: np.ndarray) -> float:
     return float(np.sum((actual_pct - expected_pct) * np.log(actual_pct / expected_pct)))
 
 
-def numeric_psi(reference: pd.Series, current: pd.Series, bins: int = 10) -> float:
-    """PSI com binning por quantis da referência."""
+def numeric_distribution(
+    reference: pd.Series, current: pd.Series, bins: int = 10
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Faixas por quantis da referência e a proporção de cada amostra por faixa.
+
+    Devolve `(bordas, proporção_referência, proporção_atual)`. As bordas extremas são
+    ±inf para que valores de produção fora do intervalo da referência sejam contados.
+    É a mesma discretização usada no PSI, o que permite plotar exatamente o que o
+    índice compara.
+    """
     quantiles = np.linspace(0, 1, bins + 1)
     edges = np.unique(np.quantile(reference, quantiles))
     edges[0], edges[-1] = -np.inf, np.inf
     exp = np.histogram(reference, bins=edges)[0] / len(reference)
     act = np.histogram(current, bins=edges)[0] / len(current)
+    return edges, exp, act
+
+
+def categorical_distribution(
+    reference: pd.Series, current: pd.Series
+) -> tuple[list, np.ndarray, np.ndarray]:
+    """Categorias presentes em qualquer amostra e a proporção de cada uma."""
+    cats = sorted(set(reference.dropna()) | set(current.dropna()))
+    exp = reference.value_counts(normalize=True).reindex(cats, fill_value=0).to_numpy()
+    act = current.value_counts(normalize=True).reindex(cats, fill_value=0).to_numpy()
+    return cats, exp, act
+
+
+def numeric_psi(reference: pd.Series, current: pd.Series, bins: int = 10) -> float:
+    """PSI com binning por quantis da referência."""
+    _, exp, act = numeric_distribution(reference, current, bins)
     return _psi_from_counts(exp, act)
 
 
 def categorical_psi(reference: pd.Series, current: pd.Series) -> float:
-    cats = sorted(set(reference.dropna()) | set(current.dropna()))
-    exp = reference.value_counts(normalize=True).reindex(cats, fill_value=0).to_numpy()
-    act = current.value_counts(normalize=True).reindex(cats, fill_value=0).to_numpy()
+    _, exp, act = categorical_distribution(reference, current)
     return _psi_from_counts(exp, act)
 
 

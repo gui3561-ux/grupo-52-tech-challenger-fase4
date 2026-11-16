@@ -8,7 +8,6 @@ __pycache__/
 *.egg-info/
 dist/
 build/
-data/raw.parquet
 .coverage
 htmlcov/
 .agents/
@@ -18,3 +17,4 @@ mlruns/
 mlflow.db
 
 
+.ipynb_checkpoints/

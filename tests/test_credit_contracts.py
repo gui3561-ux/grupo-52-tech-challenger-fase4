@@ -90,3 +90,20 @@ def test_build_corrupted_batch_intercepted():
     assert exc_info.value.failure_cases is not None
     assert len(exc_info.value.failure_cases) >= 5
 
+
+
+def test_validate_credit_data_duplicate_blocked():
+    df = pd.DataFrame([_valid_record(), _valid_record()])
+
+    with pytest.raises(DataContractViolationError) as exc_info:
+        validate_credit_data(df)
+    assert "duplicado" in str(exc_info.value)
+
+
+def test_validate_credit_data_same_profile_different_label_blocked():
+    other = _valid_record()
+    other["Risk"] = "bad"
+    df = pd.DataFrame([_valid_record(), other])
+
+    with pytest.raises(DataContractViolationError):
+        validate_credit_data(df)
