@@ -2,10 +2,22 @@
 .git
 .cursor
 .pytest_cache
+.ruff_cache
 **/__pycache__
 **/*.pyc
-tests
-data
-openspec
 *.egg-info
 .DS_Store
+# A imagem só precisa do CSV base: referência, produção, modelo, relatórios e
+# runs do MLflow são gerados pelo pipeline dentro do contêiner.
+data/*
+!data/raw
+models
+reports
+mlruns
+mlflow.db
+tests
+notebooks
+openspec
+client
+*.pdf
+*.md

@@ -369,3 +369,559 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-12 20:25:44 [INFO] credit.pipeline -    Run ID: 3bfec6963d3d405980064013cb1a4356
 2026-11-12 20:25:44 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
 2026-11-12 20:25:44 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:22 [INFO] credit.pipeline - >>> Iniciando estágio: [sample_stage]
+2026-11-14 20:13:22 [INFO] credit.pipeline - <<< Concluído estágio: [sample_stage] em 0.0253 segundos
+2026-11-14 20:13:23 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-3/test_log_operational_metrics_c0/test_mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:23 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=0.2500s, alertas críticos de drift=2
+2026-11-14 20:13:24 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-3/test_run_pipeline_returns_summ0/pipeline_test.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:24 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:24 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:24 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-14 20:13:24 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:24 [INFO] credit.pipeline - MLflow Run iniciada com ID: cfb4679572df4f25bc7f157ed4df4fdd
+2026-11-14 20:13:24 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-14 20:13:24 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0114 segundos
+2026-11-14 20:13:24 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-14 20:13:24 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:24 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0222 segundos
+2026-11-14 20:13:24 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-14 20:13:24 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0171 segundos
+2026-11-14 20:13:24 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-14 20:13:24 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5355 segundos
+2026-11-14 20:13:24 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-14 20:13:24 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0096 segundos
+2026-11-14 20:13:24 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-14 20:13:25 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4650 segundos
+2026-11-14 20:13:25 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-14 20:13:25 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.0608s, alertas críticos de drift=2
+2026-11-14 20:13:25 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-14 20:13:25 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-14 20:13:25 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-14 20:13:25 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-14 20:13:25 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-14 20:13:25 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-14 20:13:25 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:25 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-14 20:13:25 [INFO] credit.pipeline -    Run ID: cfb4679572df4f25bc7f157ed4df4fdd
+2026-11-14 20:13:25 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-14 20:13:25 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:25 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:25 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-3/test_run_pipeline_marks_failed0/pipeline_fail.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:25 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:25 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-14 20:13:25 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:25 [INFO] credit.pipeline - MLflow Run iniciada com ID: 193c0eef39664457b74354951ff0622b
+2026-11-14 20:13:25 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-14 20:13:25 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0088 segundos
+2026-11-14 20:13:25 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-14 20:13:25 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:25 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0203 segundos
+2026-11-14 20:13:25 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-14 20:13:25 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0142 segundos
+2026-11-14 20:13:25 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-14 20:13:25 [ERROR] credit.pipeline - !!! Falha no estágio: [model_training]
+2026-11-14 20:13:25 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.0001 segundos
+2026-11-14 20:13:25 [ERROR] credit.pipeline - Pipeline interrompido no estágio [model_training]: falha simulada no treino
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
+    train_metrics = train_baseline()
+                    ^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
+    raise RuntimeError("falha simulada no treino")
+RuntimeError: falha simulada no treino
+2026-11-14 20:13:38 [INFO] credit.pipeline - >>> Iniciando estágio: [sample_stage]
+2026-11-14 20:13:38 [INFO] credit.pipeline - <<< Concluído estágio: [sample_stage] em 0.0251 segundos
+2026-11-14 20:13:38 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-4/test_log_operational_metrics_c0/test_mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:38 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=0.2500s, alertas críticos de drift=2
+2026-11-14 20:13:39 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-4/test_run_pipeline_returns_summ0/pipeline_test.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:39 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:39 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:39 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-14 20:13:39 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:39 [INFO] credit.pipeline - MLflow Run iniciada com ID: 59f479ae2c064007aa1186b68eb9361a
+2026-11-14 20:13:39 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-14 20:13:39 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0094 segundos
+2026-11-14 20:13:39 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-14 20:13:39 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:39 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0190 segundos
+2026-11-14 20:13:39 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-14 20:13:39 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0139 segundos
+2026-11-14 20:13:39 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-14 20:13:39 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5080 segundos
+2026-11-14 20:13:39 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-14 20:13:39 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0075 segundos
+2026-11-14 20:13:39 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-14 20:13:40 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.3940 segundos
+2026-11-14 20:13:40 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-14 20:13:40 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=0.9518s, alertas críticos de drift=2
+2026-11-14 20:13:40 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-14 20:13:40 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-14 20:13:40 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-14 20:13:40 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-14 20:13:40 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-14 20:13:40 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-14 20:13:40 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:40 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-14 20:13:40 [INFO] credit.pipeline -    Run ID: 59f479ae2c064007aa1186b68eb9361a
+2026-11-14 20:13:40 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-14 20:13:40 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:40 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:40 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-4/test_run_pipeline_marks_failed0/pipeline_fail.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:40 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:40 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-14 20:13:40 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:40 [INFO] credit.pipeline - MLflow Run iniciada com ID: ff644d319ce64c089df80d64ade1b8c5
+2026-11-14 20:13:40 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-14 20:13:40 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0078 segundos
+2026-11-14 20:13:40 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-14 20:13:40 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:40 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0189 segundos
+2026-11-14 20:13:40 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-14 20:13:40 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0138 segundos
+2026-11-14 20:13:40 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-14 20:13:40 [ERROR] credit.pipeline - !!! Falha no estágio: [model_training]
+2026-11-14 20:13:40 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.0001 segundos
+2026-11-14 20:13:40 [ERROR] credit.pipeline - Pipeline interrompido no estágio [model_training]: falha simulada no treino
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
+    train_metrics = train_baseline()
+                    ^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
+    raise RuntimeError("falha simulada no treino")
+RuntimeError: falha simulada no treino
+2026-11-14 20:13:50 [INFO] credit.pipeline - >>> Iniciando estágio: [sample_stage]
+2026-11-14 20:13:50 [INFO] credit.pipeline - <<< Concluído estágio: [sample_stage] em 0.0230 segundos
+2026-11-14 20:13:51 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-5/test_log_operational_metrics_c0/test_mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:51 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=0.2500s, alertas críticos de drift=2
+2026-11-14 20:13:51 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-5/test_run_pipeline_returns_summ0/pipeline_test.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:51 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:51 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:51 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-14 20:13:51 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:51 [INFO] credit.pipeline - MLflow Run iniciada com ID: 1e6ca2277bfe4f8abcf1c8090fcd6176
+2026-11-14 20:13:51 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-14 20:13:51 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0097 segundos
+2026-11-14 20:13:51 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-14 20:13:51 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:51 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0190 segundos
+2026-11-14 20:13:51 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-14 20:13:51 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0137 segundos
+2026-11-14 20:13:51 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-14 20:13:52 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5104 segundos
+2026-11-14 20:13:52 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-14 20:13:52 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0086 segundos
+2026-11-14 20:13:52 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-14 20:13:52 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4554 segundos
+2026-11-14 20:13:52 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-14 20:13:52 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.0168s, alertas críticos de drift=2
+2026-11-14 20:13:52 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-14 20:13:52 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-14 20:13:52 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-14 20:13:52 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-14 20:13:52 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-14 20:13:52 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-14 20:13:52 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:52 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-14 20:13:52 [INFO] credit.pipeline -    Run ID: 1e6ca2277bfe4f8abcf1c8090fcd6176
+2026-11-14 20:13:52 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-14 20:13:52 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:52 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:53 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-5/test_run_pipeline_marks_failed0/pipeline_fail.db' | Experimento: 'credit-scoring-mlops'
+2026-11-14 20:13:53 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:53 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-14 20:13:53 [INFO] credit.pipeline - =================================================================
+2026-11-14 20:13:53 [INFO] credit.pipeline - MLflow Run iniciada com ID: fae5f60fd9514183be133463255f937b
+2026-11-14 20:13:53 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-14 20:13:53 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0079 segundos
+2026-11-14 20:13:53 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-14 20:13:53 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-14 20:13:53 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0190 segundos
+2026-11-14 20:13:53 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-14 20:13:53 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0137 segundos
+2026-11-14 20:13:53 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-14 20:13:53 [ERROR] credit.pipeline - !!! Falha no estágio: [model_training]
+2026-11-14 20:13:53 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.0001 segundos
+2026-11-14 20:13:53 [ERROR] credit.pipeline - Pipeline interrompido no estágio [model_training]: falha simulada no treino
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
+    train_metrics = train_baseline()
+                    ^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
+    raise RuntimeError("falha simulada no treino")
+RuntimeError: falha simulada no treino
+2026-11-15 22:21:21 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-15 22:21:21 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:21:21 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-15 22:21:21 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:21:21 [INFO] credit.pipeline - MLflow Run iniciada com ID: 33c1eb3ec0bb4b4cb98c29589efb713e
+2026-11-15 22:21:21 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-15 22:21:21 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0414 segundos
+2026-11-15 22:21:21 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-15 22:21:21 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-15 22:21:21 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0280 segundos
+2026-11-15 22:21:21 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-15 22:21:21 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0304 segundos
+2026-11-15 22:21:21 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-15 22:21:22 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.6062 segundos
+2026-11-15 22:21:22 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-15 22:21:22 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0099 segundos
+2026-11-15 22:21:22 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-15 22:21:23 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.5591 segundos
+2026-11-15 22:21:23 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-15 22:21:23 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.2750s, alertas críticos de drift=2
+2026-11-15 22:21:23 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-15 22:21:23 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-15 22:21:23 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-15 22:21:23 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-15 22:21:23 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-15 22:21:23 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-15 22:21:23 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:21:23 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-15 22:21:23 [INFO] credit.pipeline -    Run ID: 33c1eb3ec0bb4b4cb98c29589efb713e
+2026-11-15 22:21:23 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-15 22:21:23 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:21:59 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-15 22:21:59 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:21:59 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-15 22:21:59 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:21:59 [INFO] credit.pipeline - MLflow Run iniciada com ID: eacb66599e4f4d5393f338de42e7c060
+2026-11-15 22:21:59 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-15 22:21:59 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0190 segundos
+2026-11-15 22:21:59 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-15 22:21:59 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-15 22:21:59 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0238 segundos
+2026-11-15 22:21:59 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-15 22:21:59 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0238 segundos
+2026-11-15 22:21:59 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-15 22:22:00 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5064 segundos
+2026-11-15 22:22:00 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-15 22:22:00 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0086 segundos
+2026-11-15 22:22:00 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-15 22:22:00 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4308 segundos
+2026-11-15 22:22:00 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-15 22:22:00 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.0124s, alertas críticos de drift=2
+2026-11-15 22:22:00 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-15 22:22:00 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-15 22:22:00 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-15 22:22:00 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-15 22:22:00 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-15 22:22:00 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-15 22:22:00 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:22:00 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-15 22:22:00 [INFO] credit.pipeline -    Run ID: eacb66599e4f4d5393f338de42e7c060
+2026-11-15 22:22:00 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-15 22:22:00 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:36:07 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-15 22:36:07 [INFO] credit.pipeline - >>> Iniciando estágio: [corrupted_batch_ingestion_gate]
+2026-11-15 22:36:07 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
+2026-11-15 22:36:07 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+    return schema.validate(df, lazy=lazy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+    return self._validate(
+           ^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+    return self.get_backend(check_obj).validate(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+    raise SchemaErrors(
+pandera.errors.SchemaErrors: {
+    "DATA": {
+        "DUPLICATES": [
+            {
+                "schema": null,
+                "column": null,
+                "check": "multiple_fields_uniqueness",
+                "error": "columns '('Age', 'Credit amount', 'Duration', 'Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose')' not unique:   Age  Credit amount  Duration   Sex  Job Housing Saving accounts Checking account   Purpose5   50           4000        36  male    2    free          little       no_account  business"
+            }
+        ],
+        "DATAFRAME_CHECK": [
+            {
+                "schema": null,
+                "column": "Age",
+                "check": "in_range(18, 120)",
+                "error": "Column 'Age' failed element-wise validator number 0: in_range(18, 120) failure cases: 15"
+            },
+            {
+                "schema": null,
+                "column": "Credit amount",
+                "check": "greater_than(0)",
+                "error": "Column 'Credit amount' failed element-wise validator number 0: greater_than(0) failure cases: -1000"
+            },
+            {
+                "schema": null,
+                "column": "Duration",
+                "check": "greater_than(0)",
+                "error": "Column 'Duration' failed element-wise validator number 0: greater_than(0) failure cases: 0"
+            },
+            {
+                "schema": null,
+                "column": "Sex",
+                "check": "isin(['female', 'male'])",
+                "error": "Column 'Sex' failed element-wise validator number 0: isin(['female', 'male']) failure cases: unknown"
+            },
+            {
+                "schema": null,
+                "column": "Purpose",
+                "check": "isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])",
+                "error": "Column 'Purpose' failed element-wise validator number 0: isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others']) failure cases: crypto_trading"
+            }
+        ]
+    },
+    "SCHEMA": {
+        "SERIES_CONTAINS_NULLS": [
+            {
+                "schema": null,
+                "column": "Housing",
+                "check": "not_nullable",
+                "error": "non-nullable series 'Housing' contains null values:3    NaNName: Housing, dtype: str"
+            }
+        ]
+    }
+}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+    yield result
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+    validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+    validated = validate_credit_data(df)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+    raise DataContractViolationError(msg, failure_cases=failure_df) from err
+src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-15 22:36:07 [INFO] credit.pipeline - <<< Concluído estágio: [corrupted_batch_ingestion_gate] em 0.0373 segundos | CPU 99.8% | RSS 304.3 MB
+2026-11-15 22:36:16 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-15 22:36:16 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:36:16 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-15 22:36:16 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:36:16 [INFO] credit.pipeline - MLflow Run iniciada com ID: 1875b93a4bc1493599b1f046320648ce
+2026-11-15 22:36:16 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-15 22:36:16 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0179 segundos | CPU 102.8% | RSS 387.8 MB
+2026-11-15 22:36:16 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-15 22:36:17 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-15 22:36:17 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0229 segundos | CPU 99.9% | RSS 388.8 MB
+2026-11-15 22:36:17 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-15 22:36:17 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0223 segundos | CPU 99.9% | RSS 394.8 MB
+2026-11-15 22:36:17 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-15 22:36:17 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5086 segundos | CPU 363.2% | RSS 408.2 MB
+2026-11-15 22:36:17 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-15 22:36:17 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0036 segundos | CPU 100.2% | RSS 408.4 MB
+2026-11-15 22:36:17 [INFO] credit.pipeline - >>> Iniciando estágio: [production_ingestion_gate]
+2026-11-15 22:36:17 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-15 22:36:17 [INFO] credit.pipeline - <<< Concluído estágio: [production_ingestion_gate] em 0.0080 segundos | CPU 98.2% | RSS 408.4 MB
+2026-11-15 22:36:17 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-15 22:36:17 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4244 segundos | CPU 98.6% | RSS 449.0 MB
+2026-11-15 22:36:17 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-15 22:36:18 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.0077s, alertas críticos de drift=2
+2026-11-15 22:36:18 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-15 22:36:18 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-15 22:36:18 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-15 22:36:18 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-15 22:36:18 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-15 22:36:18 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-15 22:36:18 [INFO] credit.pipeline - =================================================================
+2026-11-15 22:36:18 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-15 22:36:18 [INFO] credit.pipeline -    Run ID: 1875b93a4bc1493599b1f046320648ce
+2026-11-15 22:36:18 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-15 22:36:18 [INFO] credit.pipeline - =================================================================
+2026-11-16 09:08:24 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 09:08:25 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'production': 254 violação(ões)
+2026-11-16 09:08:28 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-10/test_pipeline_run_completes_an0/mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-16 09:08:28 [INFO] credit.pipeline - =================================================================
+2026-11-16 09:08:28 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-16 09:08:28 [INFO] credit.pipeline - =================================================================
+2026-11-16 09:08:28 [INFO] credit.pipeline - MLflow Run iniciada com ID: ca170da1a5554a439fd3a103eade731d
+2026-11-16 09:08:28 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-16 09:08:28 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0106 segundos | CPU 100.5% | RSS 466.8 MB
+2026-11-16 09:08:28 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-16 09:08:28 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 09:08:28 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0232 segundos | CPU 99.7% | RSS 467.2 MB
+2026-11-16 09:08:28 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-16 09:08:28 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0164 segundos | CPU 97.7% | RSS 469.0 MB
+2026-11-16 09:08:28 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-16 09:08:29 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5278 segundos | CPU 354.9% | RSS 452.7 MB
+2026-11-16 09:08:29 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-16 09:08:29 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0038 segundos | CPU 100.3% | RSS 452.8 MB
+2026-11-16 09:08:29 [INFO] credit.pipeline - >>> Iniciando estágio: [production_ingestion_gate]
+2026-11-16 09:08:29 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 09:08:29 [INFO] credit.pipeline - <<< Concluído estágio: [production_ingestion_gate] em 0.0083 segundos | CPU 98.9% | RSS 452.8 MB
+2026-11-16 09:08:29 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-16 09:08:29 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4166 segundos | CPU 101.1% | RSS 477.9 MB
+2026-11-16 09:08:29 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-16 09:08:29 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.0067s, alertas críticos de drift=2
+2026-11-16 09:08:29 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-16 09:08:29 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-16 09:08:29 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-16 09:08:29 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-16 09:08:29 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-16 09:08:29 [WARNING] credit.pipeline - Artefato esperado não encontrado para registro: reports/pipeline_execution.log
+2026-11-16 09:08:29 [INFO] credit.pipeline - =================================================================
+2026-11-16 09:08:29 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-16 09:08:29 [INFO] credit.pipeline -    Run ID: ca170da1a5554a439fd3a103eade731d
+2026-11-16 09:08:29 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-16 09:08:29 [INFO] credit.pipeline - =================================================================
+2026-11-16 09:08:30 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:////private/var/folders/40/zlbgpbp12s9dgx2ns613cycw0000gq/T/pytest-of-cristiano.oloiveira/pytest-10/test_pipeline_failure_is_repor0/mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-16 09:08:30 [INFO] credit.pipeline - =================================================================
+2026-11-16 09:08:30 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-16 09:08:30 [INFO] credit.pipeline - =================================================================
+2026-11-16 09:08:30 [INFO] credit.pipeline - MLflow Run iniciada com ID: 8ad44771b6c2494e86e2d287985df7d3
+2026-11-16 09:08:30 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-16 09:08:30 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0095 segundos | CPU 100.2% | RSS 455.3 MB
+2026-11-16 09:08:30 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-16 09:08:30 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 09:08:30 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0216 segundos | CPU 99.8% | RSS 455.3 MB
+2026-11-16 09:08:30 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-16 09:08:30 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0146 segundos | CPU 100.1% | RSS 459.8 MB
+2026-11-16 09:08:30 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-16 09:08:30 [ERROR] credit.pipeline - !!! Falha no estágio: [model_training]
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+    yield result
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 134, in run_pipeline
+    train_metrics = train_baseline()
+                    ^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_api.py", line 230, in broken_training
+    raise RuntimeError("falha simulada no treino")
+RuntimeError: falha simulada no treino
+2026-11-16 09:08:30 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.0030 segundos | CPU 79.6% | RSS 459.8 MB
+2026-11-16 09:08:30 [ERROR] credit.pipeline - Pipeline interrompido no estágio [model_training]: falha simulada no treino
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 134, in run_pipeline
+    train_metrics = train_baseline()
+                    ^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_api.py", line 230, in broken_training
+    raise RuntimeError("falha simulada no treino")
+RuntimeError: falha simulada no treino
