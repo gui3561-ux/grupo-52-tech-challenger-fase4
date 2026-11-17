@@ -74,6 +74,27 @@ def test_log_operational_metrics_flags_performance_degradation(tmp_path):
     assert tags["pipeline.performance_alert"] == "DEGRADED"
 
 
+def test_log_operational_metrics_measures_drop_against_production_base(tmp_path):
+    setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
+    import mlflow
+
+    with mlflow.start_run() as run:
+        metrics = log_operational_metrics(
+            latencies={"validation": 0.05},
+            processed_rows={"reference": 700},
+            eval_metrics={"roc_auc": 0.85, "accuracy": 0.78},
+            production_metrics={"roc_auc": 0.72, "accuracy": 0.71},
+            baseline_metrics={"roc_auc": 0.72, "accuracy": 0.71},
+        )
+
+    # O holdout otimista (0.85) não entra na queda: a Produção-base tem precedência.
+    assert metrics["production_base_roc_auc"] == 0.72
+    assert metrics["production_base_accuracy"] == 0.71
+    assert metrics["roc_auc_drop"] == 0
+    assert metrics["model_roc_auc"] == 0.85
+    assert mlflow.get_run(run.info.run_id).data.tags["pipeline.performance_alert"] == "OK"
+
+
 def test_log_operational_metrics_without_production_skips_performance_tag(tmp_path):
     setup_mlflow(tracking_uri=f"sqlite:///{tmp_path}/test_mlflow.db")
     import mlflow
@@ -175,7 +196,7 @@ def test_run_pipeline_returns_summary(tmp_path):
 
     tags = mlflow.get_run(summary["run_id"]).data.tags
     assert "infra.platform" in tags and "infra.cpu_count" in tags
-    assert summary["roc_auc_drop"] == round(summary["roc_auc_holdout"] - summary["roc_auc_production"], 4)
+    assert summary["roc_auc_drop"] == round(summary["roc_auc_baseline"] - summary["roc_auc_production"], 4)
 
 
 

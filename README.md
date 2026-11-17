@@ -6,13 +6,13 @@ Tech Challenge da Fase 4 da pós-graduação em Machine Learning (FIAP). **Grupo
 - **Repositório GitHub:** [https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4](https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4)
 - **Vídeo STAR (≤ 5 min):** _pendente — inserir link_
 
-| RM | Integrante | Área de Atuação Principal |
-|---|---|---|
-| RM371323 | Guilherme Ramos Couceiro | Arquitetura de Sustentação e Orquestração |
-| RM372947 | Lucas Ribeiro Pestana | Validação de Contratos de Dados (Pandera) |
-| RM373551 | Sávio Aparecido Crispim | Simulação e Detecção Estatística de Drift (Evidently) |
-| RM373555 | Wesley Oliveira | Observabilidade e Tracking de Experimentos (MLflow) |
-| RM373529 | Cristiano Santos de Oliveira | Governança (LGPD) e Análise Causal |
+| RM | Integrante |
+|---|---|
+| RM371323 | Guilherme Ramos Couceiro |
+| RM372947 | Lucas Ribeiro Pestana |
+| RM373551 | Sávio Aparecido Crispim |
+| RM373555 | Wesley Oliveira |
+| RM373529 | Cristiano Santos de Oliveira |
 
 ---
 
@@ -92,7 +92,7 @@ O edital exige um dataset com no mínimo 5.000 amostras, e o *German Credit* ori
 
 **Método:** cópula gaussiana ajustada **por classe** de Risk, preservando as distribuições marginais, as correlações e a proporção de 30% de ad. Os sintéticos de **Referência** (2.800) usam apenas as linhas reais da Referência, e os de **Produção** (1.200) apenas as da Produção, sem *data leakage* entre os conjuntos. Todas as linhas passam pelo contrato Pandera. O drift é injetado depois, em simulate_drift. A semente é fixa (RANDOM_STATE=42).
 
-> **Limitação:** o holdout da Referência tem ~80% de linhas sintéticas e, por isso, o ROC-AUC de .8528$ é otimista. Medido em 300 linhas **reais** nunca vistas no treino, o AUC é .7476$ (treino só com reais), .6903$ (só sintéticos) e .7035$ (reais + sintéticos). O modelo mantém sinal real, mas os números absolutos devem ser lidos com essa ressalva.
+> **Limitação:** o holdout da Referência tem ~80% de linhas sintéticas e, por isso, o ROC-AUC de .8528$ é otimista. Medido em 300 linhas **reais** nunca vistas no treino, o AUC é .7476$ (treino só com reais), .6903$ (só sintéticos) e .7035$ (reais + sintéticos). O modelo mantém sinal real, mas os números absolutos devem ser lidos com essa ressalva. Por isso o alerta de Concept Drift **não** usa o holdout como baseline: a queda de ROC-AUC é medida contra o mesmo modelo na **Produção-base** (`production_raw.csv`, antes do choque, ROC-AUC $0.7238$). Assim o cenário sem choque dá queda zero, e a queda mede só o efeito do choque.
 
 ### 2.4. Execução em Contêiner (Docker)
 
@@ -192,10 +192,10 @@ Resposta real, com a lista `features` reduzida a três das nove variáveis:
   ],
   "data_drift": {"detected": true, "critical_features": ["Age", "Credit amount"]},
   "concept_drift": {
-    "reference": {"roc_auc": 0.852, "accuracy": 0.7886},
+    "reference": {"roc_auc": 0.7238, "accuracy": 0.7167},
     "production": {"roc_auc": 0.5762, "accuracy": 0.63},
-    "roc_auc_drop": 0.2758,
-    "accuracy_drop": 0.1586,
+    "roc_auc_drop": 0.1476,
+    "accuracy_drop": 0.0867,
     "degraded": true
   },
   "thresholds": {"psi_moderate": 0.1, "psi_critical": 0.25, "roc_auc_drop_alert": 0.05},
@@ -225,7 +225,7 @@ npm run dev       # http://localhost:5173
 |---|---|
 | **Pipeline** | As 7 etapas em ordem, com status (concluída, bloqueada, falhou), o resultado da última execução e um botão por etapa. **Executar pipeline completo** acompanha o job e mostra a run do MLflow. |
 | **Simulação de drift** | Cenários *Sem choque*, *Oficial* e *Severo*, e controles de inflação, ruído, rejuvenescimento e redistribuição de `Checking account`. Aplicar simula, valida o lote no contrato e recalcula a detecção; o antes × depois aparece no painel. |
-| **Diagnóstico** | Features com drift crítico, ROC-AUC e acurácia em produção contra o holdout e o alerta de desempenho; marcados como desatualizados quando os dados mudam depois da detecção. |
+| **Diagnóstico** | Features com drift crítico, ROC-AUC e acurácia em produção contra a Produção-base (mesmo modelo, antes do choque) e o alerta de desempenho; marcados como desatualizados quando os dados mudam depois da detecção. |
 | **Visualização** | PSI por feature (barras ranqueadas com as réguas de 0,10 e 0,25) e, para a feature selecionada, a distribuição Referência × Produção. Cada gráfico tem tabela equivalente. |
 | **Relatório Evidently** | O HTML da seção 3.2, em nova aba ou embutido. |
 
@@ -278,7 +278,7 @@ Implementada em `src/credit/observability.py` e integrada em `src/credit/pipelin
   - Ingestion Gate (lote corrompido submetido a cada run): `contract_rejected_batches`, `contract_rejected_rows` e `contract_violations_count`.
   - Contagem de alertas críticos: `drift_critical_alerts_count` (contagem de variáveis com $\text{PSI} \ge 0.25$).
   - Métricas de desempenho do modelo (holdout): `model_roc_auc`, `model_accuracy` e `model_f1_bad`.
-  - Métricas de desempenho em produção (Concept Drift): `production_roc_auc`, `production_accuracy` e `roc_auc_drop` (queda de ROC-AUC do holdout para a produção).
+  - Métricas de desempenho em produção (Concept Drift): `production_roc_auc`, `production_accuracy`, `production_base_roc_auc`, `production_base_accuracy` (mesmo modelo na Produção-base, antes do choque) e `roc_auc_drop` (queda de ROC-AUC da Produção-base para a produção; o holdout não é usado por ser otimista, veja a seção 2.3).
   - Ingestion Gate no lote de produção: `contract_violations_production` (0 quando o lote atende ao contrato). O lote que chega em produção passa pelo mesmo contrato Pandera do treino antes de qualquer inferência.
   - Saúde da infraestrutura por estágio: `cpu_percent_<estágio>` (tempo de CPU / tempo de parede; acima de 100% indica uso de mais de um núcleo) e `memory_rss_mb_<estágio>` (memória residente do processo ao fim do estágio). O ambiente de execução fica registrado nas tags `infra.platform`, `infra.python_version`, `infra.cpu_count` e `infra.total_memory_gb`, para distinguir regressão de código de diferença de máquina.
 - **Tags de Alerta (filtráveis na UI do MLflow):**
@@ -367,9 +367,9 @@ flowchart TD
   Como as variáveis preditoras mudaram de escala e contexto socioeconômico, a correlação entre as features e o verdadeiro comportamento de adimplência mudou. Um empréstimo de valor elevado já não indicava necessariamente uma compra suntuária arriscada, mas sim a reposição inflacionária ordinária.
 - **Impacto no Desempenho do Modelo:**
   O classificador baseline (*XGBoost*), cujas regras de partição e limites de decisão foram calibrados sobre o espaço de treino original, perdeu completamente a calibração de probabilidades:
-  - **ROC-AUC em Holdout (Referência):** $0.8520$ (holdout com ~80% de linhas sintéticas; veja a nota de dados sintéticos na seção 2.3 — em linhas 100% reais o AUC é ≈ $0.70$).
-  - **ROC-AUC em Produção:** $0.5762$ (modelo degradado para próximo de um classificador aleatório, $\Delta = -0.2758$).
-  - **Acurácia Global:** Sofreu queda de $78.86\%$ para $63.00\%$.
+  - **ROC-AUC na Produção-base (antes do choque):** $0.7238$ (baseline do alerta). O holdout da Referência ($0.8520$) é apenas informativo: é otimista por ter ~80% de linhas sintéticas (veja a seção 2.3).
+  - **ROC-AUC em Produção:** $0.5762$ (modelo degradado para próximo de um classificador aleatório, $\Delta = -0.1476$ contra a Produção-base).
+  - **Acurácia Global:** Sofreu queda de $71.67\%$ (Produção-base) para $63.00\%$.
 
 ### 5.3. Ações Prescritivas de Sustentação MLOps
 

@@ -71,6 +71,8 @@ export interface PipelineSummary {
   run_id: string
   total_latency_seconds: number
   roc_auc_holdout: number
+  /** ROC-AUC do modelo na Produção-base (antes do choque): baseline da queda. */
+  roc_auc_baseline: number
   drift_critical_alerts: number
   roc_auc_production: number
   roc_auc_drop: number

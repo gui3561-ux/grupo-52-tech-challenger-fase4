@@ -103,7 +103,7 @@ function JobStatus({ job }: { job: PipelineJob }) {
         </p>
         {summary && (
           <p className="muted small">
-            ROC-AUC {formatNumber(summary.roc_auc_holdout, 3)} → {formatNumber(summary.roc_auc_production, 3)} ·{' '}
+            ROC-AUC {formatNumber(summary.roc_auc_baseline, 3)} → {formatNumber(summary.roc_auc_production, 3)} ·{' '}
             {summary.drift_critical_alerts} alerta(s) crítico(s) · run MLflow <code>{summary.run_id.slice(0, 8)}</code>
           </p>
         )}

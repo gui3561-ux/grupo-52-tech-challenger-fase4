@@ -23,11 +23,13 @@ PSI/KS por feature (detalhe em `drift_stats.csv`):
 
 ## Concept Drift (degradação do modelo)
 
-Referência = performance de **holdout** (out-of-sample) do treino; Produção = mesmo modelo sobre o dataset com drift (labels reais preservados).
+Produção-base = mesmo modelo sobre a partição de produção **antes do choque** (nunca vista no treino); Produção = mesmo modelo sobre o dataset com drift (labels reais preservados). A queda isola o efeito do choque.
 
-| Métrica | Referência (holdout) | Produção | Queda |
+| Métrica | Produção-base (sem choque) | Produção | Queda |
 |---|---|---|---|
-| ROC-AUC | 0.852 | 0.5762 | 0.2758 |
-| Accuracy | 0.7886 | 0.63 | 0.1586 |
+| ROC-AUC | 0.7238 | 0.5762 | 0.1476 |
+| Accuracy | 0.7167 | 0.63 | 0.0867 |
+
+Holdout do treino (informativo): ROC-AUC 0.852, accuracy 0.7886. Ele não é usado como baseline porque é otimista: as linhas sintéticas da Referência foram geradas a partir das mesmas linhas reais que caem no holdout.
 
 > O relatório visual completo do Evidently está em `drift_report.html`.

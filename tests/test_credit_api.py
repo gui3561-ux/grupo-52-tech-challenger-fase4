@@ -20,6 +20,8 @@ from src.credit import config as C
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 TRAINING_STAGES = ("data_split", "model_training")
+# Cenário "Sem choque" do client: produção idêntica à Produção-base.
+NO_SHOCK = {"credit_inflation": 1.0, "credit_noise_std": 0, "age_shift_years": 0, "checking_distribution": None}
 
 
 @pytest.fixture
@@ -125,9 +127,8 @@ def test_simulate_drift_default_applies_official_shock(client):
 
 def test_simulate_drift_without_shock_keeps_distributions(client):
     run_stages(client, "data_split")
-    no_shock = {"credit_inflation": 1.0, "credit_noise_std": 0, "age_shift_years": 0, "checking_distribution": None}
 
-    body = client.post("/drift/simulate", json=no_shock).json()
+    body = client.post("/drift/simulate", json=NO_SHOCK).json()
 
     for change in body["numeric_changes"]:
         assert change["mean_after"] == change["mean_before"]
@@ -174,8 +175,24 @@ def test_detect_drift_reports_data_and_concept_drift(client):
     concept = body["concept_drift"]
     assert concept["roc_auc_drop"] == round(concept["reference"]["roc_auc"] - concept["production"]["roc_auc"], 4)
     assert concept["degraded"] == (concept["roc_auc_drop"] >= body["thresholds"]["roc_auc_drop_alert"])
+    assert concept["degraded"] is True
     categorical = next(f for f in body["features"] if f["type"] == "categorical")
     assert categorical["ks_pvalue"] is None
+
+
+def test_detect_drift_without_shock_reports_no_degradation(client):
+    """Controle: sem choque, a produção é a Produção-base e o modelo não pode parecer degradado."""
+    run_stages(client, *TRAINING_STAGES)
+    client.post("/drift/simulate", json=NO_SHOCK)
+
+    body = client.post("/drift/detect").json()
+
+    assert body["data_drift"]["detected"] is False
+    concept = body["concept_drift"]
+    assert concept["reference"] == concept["production"]
+    assert concept["roc_auc_drop"] == 0
+    assert concept["accuracy_drop"] == 0
+    assert concept["degraded"] is False
 
 
 def test_report_is_served_after_detection(client):

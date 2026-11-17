@@ -9,7 +9,7 @@ Interface React + TypeScript (Vite) para a API FastAPI de `src/api/` (Tech Chall
   crédito, ruído, rejuvenescimento da base e a redistribuição de `Checking account`. **Aplicar simulação** segue
   a ordem do pipeline: simula, valida o lote no contrato Pandera e recalcula a detecção. Mostra o antes × depois.
 - **Diagnóstico:** indicadores de Data Drift (features com PSI ≥ 0,25) e Concept Drift (ROC-AUC e acurácia em
-  produção contra o holdout, alerta de desempenho). Ficam marcados como *desatualizados* se a referência, o
+  produção contra a Produção-base, isto é, o mesmo modelo antes do choque, e alerta de desempenho). Ficam marcados como *desatualizados* se a referência, o
   modelo ou a produção mudarem depois da detecção.
 - **Visualização:** PSI por feature em barras ranqueadas, com as réguas de 0,10 e 0,25. Selecionar uma feature
   mostra a distribuição Referência × Produção, na mesma discretização usada no PSI. Cada gráfico tem tabela.

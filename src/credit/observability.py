@@ -161,8 +161,13 @@ def log_operational_metrics(
     eval_metrics: dict[str, Any] | None = None,
     contract_metrics: dict[str, int] | None = None,
     production_metrics: dict[str, Any] | None = None,
+    baseline_metrics: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Registra no MLflow métricas operacionais, parâmetros e contagem de alertas.
+
+    `baseline_metrics` é o desempenho na Produção-base (antes do choque). Quando
+    informado, a queda de ROC-AUC é medida contra ele; sem ele, contra o holdout
+    de `eval_metrics` (comportamento anterior).
 
     Retorna o dicionário de métricas registradas.
     """
@@ -203,8 +208,18 @@ def log_operational_metrics(
                 mlflow.log_metric(key, val)
                 logged_metrics[key] = val
 
-        if eval_metrics and "roc_auc" in eval_metrics and "roc_auc" in production_metrics:
-            drop = round(float(eval_metrics["roc_auc"]) - float(production_metrics["roc_auc"]), 4)
+        for metric_name in ["roc_auc", "accuracy"]:
+            if baseline_metrics and metric_name in baseline_metrics:
+                key = f"production_base_{metric_name}"
+                val = float(baseline_metrics[metric_name])
+                mlflow.log_metric(key, val)
+                logged_metrics[key] = val
+
+        # O holdout é otimista (sintéticos da Referência vêm das mesmas linhas reais),
+        # por isso a Produção-base tem precedência como baseline da queda.
+        expected = baseline_metrics if baseline_metrics and "roc_auc" in baseline_metrics else eval_metrics
+        if expected and "roc_auc" in expected and "roc_auc" in production_metrics:
+            drop = round(float(expected["roc_auc"]) - float(production_metrics["roc_auc"]), 4)
             mlflow.log_metric("roc_auc_drop", drop)
             logged_metrics["roc_auc_drop"] = drop
             performance_degraded = drop >= ROC_AUC_DROP_ALERT_THRESHOLD
