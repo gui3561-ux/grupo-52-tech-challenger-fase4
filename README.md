@@ -1,10 +1,12 @@
 # Tech Challenge — Fase 4: MLOps em Risco de Crédito
+
 ### Sustentação, Qualidade de Dados, Detecção de Drift, Observabilidade e Governança
 
 Tech Challenge da Fase 4 da pós-graduação em Machine Learning (FIAP). **Grupo 98.**
 
 - **Repositório GitHub:** [https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4](https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4)
-- **Vídeo STAR (≤ 5 min):** _pendente — inserir link_
+
+**Vídeo STAR (≤ 5 min):** [https://youtu.be/hpg9go8HR9k](https://youtu.be/hpg9go8HR9k)
 
 | RM | Integrante |
 |---|---|
@@ -21,6 +23,7 @@ Tech Challenge da Fase 4 da pós-graduação em Machine Learning (FIAP). **Grupo
 No setor financeiro e em fintechs de concessão de crédito, a estabilidade e a confiabilidade de modelos preditivos em produção são vitais para a saúde da carteira. Mudanças no cenário macroeconômico (inflação, juros, novos hábitos de consumo) frequentemente provocam uma **degradação silenciosa**: o modelo continua respondendo às requisições sem erros de software, mas suas predições tornam-se progressivamente enviesadas ou imprecisas, elevando taxas de inadimplência ou recusando clientes elegíveis.
 
 O objetivo deste projeto é construir a **Camada de Sustentação e Confiabilidade MLOps** para um modelo de *Credit Scoring*, implementando:
+
 1. **Contratos Estritos de Dados (Pandera):** Barreira de qualidade de dados (*Ingestion Gate*) que impede que dados corruptos alimentem o modelo.
 2. **Detecção e Diagnóstico de Drift (Evidently AI):** Simulação de choque macroeconômico (Data Drift e Concept Drift) e avaliação estatística via Population Stability Index (PSI) e teste de Kolmogorov-Smirnov (KS).
 3. **Observabilidade de Pipelines e Modelos (MLflow):** Rastreamento de ponta a ponta do ciclo de vida, logging estruturado de cada estágio, medição de latência, persistência de artefatos visuais e painel centralizado de métricas operacionais.
@@ -245,11 +248,13 @@ Implementada em `src/credit/data/contracts.py` através do **Pandera**, a valida
 - **Limites e Tipagem:** `Credit amount` e `Duration` devem ser estritamente positivos.
 
 #### Demonstração de Bloqueio de Lote Corrupto
+
 Para evidenciar a barreira de dados, `src/credit/run_etapa1.py` injeta um lote propositalmente corrompido com idades menores de 18 anos, categorias inexistentes e nulos ilegais. O pipeline intercepta a anomalia imediatamente, lançando `DataContractViolationError` e abortando o processamento antes do cálculo de qualquer inferência.
 
 ### 3.2. Etapa 2 — Simulação e Detecção Estatística de Drift
 
 Para diagnosticar a degradação silenciosa provocada por transformações socioeconômicas, o script `src/credit/data/simulate_drift.py` simula o ambiente de produção sob estresse:
+
 1. **Choque Inflacionário:** Multiplicação de `Credit amount` em 1.6x e adição de ruído estocástico, simulando maior necessidade de capital nominal pelos tomadores.
 2. **Rejuvenescimento do Perfil:** Deslocamento da média de `Age` para perfis mais jovens (entrantes no mercado digital de fintechs com histórico creditício escasso).
 3. **Liquidez Comprimida:** Degradação das faixas de saldo em `Checking account`, elevando proporções de clientes com liquidez classificada em `little`.
@@ -257,7 +262,9 @@ Para diagnosticar a degradação silenciosa provocada por transformações socio
 Esses fatores são o cenário padrão, usado pelos scripts e pelo pipeline. A intensidade de cada choque pode ser variada via `POST /drift/simulate` (seção 2.5): com inflação `1.0`, ruído `0`, deslocamento de idade `0` e `checking_distribution: null`, a produção permanece igual à produção-base (cenário sem drift, útil como controle).
 
 #### Diagnóstico Estatístico com Evidently AI
+
 Executado por `src/credit/run_etapa2.py`:
+
 - **Population Stability Index (PSI):** Quantifica o desvio entre as distribuições empíricas de referência e produção. Valores de $\text{PSI} \ge 0.25$ indicam instabilidade severa.
   - `Age`: $\text{PSI} \approx 1.08$ (**Drift Crítico**)
   - `Credit amount`: $\text{PSI} \approx 0.45$ (**Drift Crítico**)
@@ -270,6 +277,7 @@ Executado por `src/credit/run_etapa2.py`:
 ### 3.3. Etapa 3 — Observabilidade de Pipelines e Modelos (MLflow)
 
 Implementada em `src/credit/observability.py` e integrada em `src/credit/pipeline.py`:
+
 - **Tracking Server:** Configurado sobre backend SQLite seguro (`sqlite:///mlflow.db`) e diretório `./mlruns`.
 - **Logs Estruturados:** Todas as execuções gravam logs padronizados com timestamps, níveis de severidade e latência por etapa no arquivo operacional `reports/pipeline_execution.log`.
 - **Métricas de Saúde Registradas no MLflow:**
@@ -307,11 +315,11 @@ A operação do pipeline de concessão de crédito se fundamenta nas seguintes h
 
 O *German Credit Dataset* contém variáveis que demandam avaliação estrita quanto ao potencial discriminatório:
 
-| Variável | Classificação LGPD | Risco de Viés / Mitigação Adotada |
-|---|---|---|
-| **`Sex` (Gênero)** | Dado Pessoal (indireto sensível) | **Mitigação:** De acordo com o Art. 6º, IX (não discriminação), o gênero não pode determinar desfechos adversos de crédito de forma injustificada. O pipeline prevê auditorias periódicas de *Fairness* (*Disparate Impact Ratio* e paridade demográfica). Se detectado impacto desproporcional, o atributo deve sofrer desponderação ou remoção como feature ativa. |
-| **`Age` (Idade)** | Dado Pessoal | **Mitigação:** Utilizado unicamente para validação de maioridade civil (Art. 5º do Código Civil) e calibração de estabilidade financeira. É monitorado pelo teste PSI para garantir que novas faixas etárias não sejam sumariamente penalizadas pela ausência de histórico pregresso. |
-| **`Credit amount`, `Duration`, `Job`** | Dados Transacionais / Cadastrais | **Mitigação:** Atributos estritamente pertinentes e necessários à finalidade de concessão (princípios da necessidade e adequação, Art. 6º, I e III). |
+| Variável                                   | Classificação LGPD               | Risco de Viés / Mitigação Adotada                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Sex` **(Gênero)**                         | Dado Pessoal (indireto sensível) | **Mitigação:** De acordo com o Art. 6º, IX (não discriminação), o gênero não pode determinar desfechos adversos de crédito de forma injustificada. O pipeline prevê auditorias periódicas de *Fairness* (*Disparate Impact Ratio* e paridade demográfica). Se detectado impacto desproporcional, o atributo deve sofrer desponderação ou remoção como feature ativa. |
+| `Age` **(Idade)**                          | Dado Pessoal                     | **Mitigação:** Utilizado unicamente para validação de maioridade civil (Art. 5º do Código Civil) e calibração de estabilidade financeira. É monitorado pelo teste PSI para garantir que novas faixas etárias não sejam sumariamente penalizadas pela ausência de histórico pregresso.                                                                                |
+| `Credit amount`**,** `Duration`**,** `Job` | Dados Transacionais / Cadastrais | **Mitigação:** Atributos estritamente pertinentes e necessários à finalidade de concessão (princípios da necessidade e adequação, Art. 6º, I e III).                                                                                                                                                                                                                 |
 
 > [!IMPORTANT]
 > **Proibição de Discriminação Ilícita (Artigo 6º, inciso IX, LGPD):**
@@ -320,6 +328,7 @@ O *German Credit Dataset* contém variáveis que demandam avaliação estrita qu
 ### 4.3. Direitos dos Titulares e Revisão de Decisões Automatizadas
 
 Em cumprimento ao **Artigo 20 da LGPD**:
+
 - O titular tem o direito de solicitar a **revisão de decisões tomadas unicamente com base em tratamento automatizado** de dados pessoais que afetem seus interesses, incluindo decisões destinadas a definir o seu perfil de crédito (*credit score*).
 - O controlador deve fornecer, sempre que solicitado, informações claras e adequadas a respeito dos critérios e dos procedimentos utilizados para a decisão automatizada (explicabilidade do modelo via SHAP/Feature Importance), observados os segredos comercial e industrial.
 
@@ -353,27 +362,31 @@ flowchart TD
 ### 5.1. Mecanismo Macroeconômico e Comportamental
 
 1. **Pressão Inflacionária e Custo de Vida:**
+
    Com a elevação da inflação acumulada, o montante nominal solicitado nos empréstimos aumentou sensivelmente. O que anteriormente era considerado um empréstimo de valor atípico ou alto risco no período de referência tornou-se o valor padrão solicitado para necessidades básicas em produção.
 2. **Reconfiguração Etária da Base de Clientes:**
+
    A estratégia de aquisição digital atraiu tomadores substancialmente mais jovens (`Age` médio menor). No entanto, o modelo treinado na distribuição antiga havia aprendido que tomadores jovens possuíam, historicamente, um risco ligeiramente superior devido ao menor tempo de relacionamento bancário estável.
 3. **Contração de Liquidez Imediata:**
+
    A proporção de clientes operando na faixa `little` de `Checking account` cresceu em virtude da volatilidade econômica e menor poupança preventiva.
 
 ### 5.2. O Fenômeno Estatístico: De Data Drift a Concept Drift
 
 - **Data Drift (Mudança em $P(X)$):**
-  A distribuição conjunta dos atributos de entrada sofreu severa perturbação. O teste PSI acusou instabilidade crítica em `Age` ($\text{PSI} \approx 1.08$) e `Credit amount` ($\text{PSI} \approx 0.45$), enquanto o teste de Kolmogorov-Smirnov rejeitou a hipótese de estabilidade ($p\text{-valor} < 10^{-4}$).
+A distribuição conjunta dos atributos de entrada sofreu severa perturbação. O teste PSI acusou instabilidade crítica em `Age` ($\text{PSI} \approx 1.08$) e `Credit amount` ($\text{PSI} \approx 0.45$), enquanto o teste de Kolmogorov-Smirnov rejeitou a hipótese de estabilidade ($p\text{-valor} < 10^{-4}$).
 - **Concept Drift (Mudança em $P(Y \mid X)$):**
-  Como as variáveis preditoras mudaram de escala e contexto socioeconômico, a correlação entre as features e o verdadeiro comportamento de adimplência mudou. Um empréstimo de valor elevado já não indicava necessariamente uma compra suntuária arriscada, mas sim a reposição inflacionária ordinária.
+Como as variáveis preditoras mudaram de escala e contexto socioeconômico, a correlação entre as features e o verdadeiro comportamento de adimplência mudou. Um empréstimo de valor elevado já não indicava necessariamente uma compra suntuária arriscada, mas sim a reposição inflacionária ordinária.
 - **Impacto no Desempenho do Modelo:**
-  O classificador baseline (*XGBoost*), cujas regras de partição e limites de decisão foram calibrados sobre o espaço de treino original, perdeu completamente a calibração de probabilidades:
+O classificador baseline (*XGBoost*), cujas regras de partição e limites de decisão foram calibrados sobre o espaço de treino original, perdeu completamente a calibração de probabilidades:
   - **ROC-AUC na Produção-base (antes do choque):** $0.7238$ (baseline do alerta). O holdout da Referência ($0.8520$) é apenas informativo: é otimista por ter ~80% de linhas sintéticas (veja a seção 2.3).
   - **ROC-AUC em Produção:** $0.5762$ (modelo degradado para próximo de um classificador aleatório, $\Delta = -0.1476$ contra a Produção-base).
-  - **Acurácia Global:** Sofreu queda de $71.67\%$ (Produção-base) para $63.00\%$.
+  - **Acurácia Global:** Sofreu queda de $71.67$ (Produção-base) para $63.00$.
 
 ### 5.3. Ações Prescritivas de Sustentação MLOps
 
 Diante da detecção tempestiva provida pela camada de observabilidade, a esteira de MLOps deve disparar:
+
 1. **Acionamento de Alerta Operacional:** O orquestrador reporta a violação do limiar de segurança de drift ao time de risco.
 2. **Retreino com Ponderação Temporal:** Incorporação do lote de produção mais recente à janela de treinamento, atribuindo pesos de decaimento exponencial aos dados históricos desatualizados.
 3. **Engenharia de Features Resilientes:** Criação de variáveis deflacionadas (ex.: razão entre valor solicitado e renda declarada, em vez de valor nominal absoluto).

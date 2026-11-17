@@ -32,7 +32,7 @@ O pipeline de dados SHALL dividir o dataset pré-processado em um conjunto de Re
 - **THEN** o sistema salva `data/reference/reference.csv` com 700 linhas e `data/production/production_raw.csv` com 300 linhas, ambos preservando aproximadamente 70% de instâncias `good` e 30% de instâncias `bad`
 
 ### Requirement: Contrato de dados com Pandera para controle de qualidade
-O pipeline de dados SHALL validar as instâncias do dataset de crédito contra um schema formal do Pandera (`DataFrameSchema`), impondo regras rígidas de integridade: tipos de dados corretos, limites numéricos (`Age >= 18` e `<= 120`, `Credit amount > 0`, `Duration > 0`), domínios categóricos válidos para `Sex`, `Job`, `Housing`, `Saving accounts`, `Checking account`, `Purpose` e `Risk`, e ausência de valores nulos nas colunas obrigatórias.
+O pipeline de dados SHALL validar as instâncias do dataset de crédito contra um schema formal do Pandera (`DataFrameSchema`), impondo regras rígidas de integridade: tipos de dados corretos, limites numéricos (`Age >= 18` e `<= 120`, `Credit amount > 0`, `Duration > 0`), domínios categóricos válidos para `Sex`, `Job`, `Housing`, `Saving accounts`, `Checking account`, `Purpose` e `Risk`, ausência de valores nulos nas colunas obrigatórias e ausência de registros duplicados nas features.
 
 #### Scenario: Dataset válido é aprovado pelo contrato
 - **WHEN** o dataset pré-processado contendo valores conformes é submetido à validação de esquema
@@ -42,11 +42,22 @@ O pipeline de dados SHALL validar as instâncias do dataset de crédito contra u
 - **WHEN** um conjunto de dados violar uma ou mais restrições do contrato (ex.: idade menor que 18 ou nulos em colunas obrigatórias)
 - **THEN** o validador interrompe o processamento e emite uma exceção contendo a listagem analítica das colunas, índices e valores que falharam na checagem
 
+#### Scenario: Registros duplicados são rejeitados
+- **WHEN** um lote contiver dois ou mais registros com as mesmas features
+- **THEN** o validador levanta `DataContractViolationError` apontando os registros duplicados
+
 ### Requirement: Interceptação e bloqueio de lote corrompido (Ingestion Gate)
 O sistema SHALL disponibilizar uma rotina demonstrativa que gera ou injeta um lote de dados com anomalias propositais (ex.: clientes menores de idade, crédito negativo, categorias inexistentes e nulos não autorizados) e comprova que a barreira de ingestão bloqueia o lote, impedindo que o modelo consuma dados inválidos.
 
 #### Scenario: Lote anômalo é interceptado e bloqueado antes da ingestão
 - **WHEN** o lote intencionalmente corrompido é processado pela barreira de validação
 - **THEN** a operação de ingestão é imediatamente abortada, registrando em log as razões do bloqueio e garantindo que nenhum registro defeituoso avance para as etapas de treino ou predição
+
+### Requirement: Validação do dataset de Produção antes da predição
+O pipeline SHALL validar o dataset de Produção (com drift) contra o mesmo contrato de dados antes de gerar predições ou relatórios de drift.
+
+#### Scenario: Produção inválida bloqueia a detecção
+- **WHEN** o dataset de Produção violar o contrato
+- **THEN** o pipeline é interrompido antes da predição e a falha é registrada
 
 
