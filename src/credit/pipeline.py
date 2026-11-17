@@ -166,6 +166,7 @@ def run_pipeline(tracking_uri: str = DEFAULT_TRACKING_URI) -> dict[str, str | fl
                 eval_metrics=train_metrics,
                 contract_metrics=contract_metrics,
                 production_metrics=drift_results["perf_production"],
+                baseline_metrics=drift_results["perf_reference"],
             )
             log_pipeline_artifacts()
         except Exception as exc:
@@ -182,6 +183,8 @@ def run_pipeline(tracking_uri: str = DEFAULT_TRACKING_URI) -> dict[str, str | fl
             "run_id": run_id,
             "total_latency_seconds": round(sum(latencies.values()), 4),
             "roc_auc_holdout": train_metrics["roc_auc"],
+            # Baseline da queda: mesmo modelo na Produção-base (antes do choque).
+            "roc_auc_baseline": logged_metrics["production_base_roc_auc"],
             "drift_critical_alerts": logged_metrics["drift_critical_alerts_count"],
             "roc_auc_production": logged_metrics["production_roc_auc"],
             "roc_auc_drop": logged_metrics["roc_auc_drop"],

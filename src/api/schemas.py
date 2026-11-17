@@ -163,7 +163,12 @@ class DataDrift(BaseModel):
 
 
 class ConceptDrift(BaseModel):
-    reference: Performance = Field(description="Desempenho de holdout registrado no treino.")
+    reference: Performance = Field(
+        description=(
+            "Desempenho do mesmo modelo na Produção-base (antes do choque). O holdout do treino "
+            "não é usado: é otimista porque os sintéticos da Referência vêm das mesmas linhas reais."
+        )
+    )
     production: Performance = Field(description="Mesmo modelo sobre o dataset de produção com drift.")
     roc_auc_drop: float
     accuracy_drop: float

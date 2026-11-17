@@ -44,6 +44,19 @@ def _performance(df: pd.DataFrame) -> dict:
     }
 
 
+def _load_production_base() -> pd.DataFrame:
+    """Produção-base (`production_raw.csv`): a partição de produção antes do choque."""
+    if not C.PRODUCTION_RAW_CSV.exists():
+        raise FileNotFoundError(
+            f"{C.PRODUCTION_RAW_CSV} não encontrado. Rode: uv run python -m src.credit.data.preprocess"
+        )
+    df = pd.read_csv(C.PRODUCTION_RAW_CSV)
+    # Mesma normalização de `simulate_drift`, para que "sem choque" avalie dados idênticos.
+    for col in ["Saving accounts", "Checking account"]:
+        df[col] = df[col].fillna(C.NO_ACCOUNT_FILL)
+    return df
+
+
 def build_drift_report() -> dict:
     if not C.PRODUCTION_CSV.exists():
         raise FileNotFoundError(
@@ -52,6 +65,7 @@ def build_drift_report() -> dict:
     model = load_model()
     reference = predict_frame(model, pd.read_csv(C.REFERENCE_CSV))
     production = predict_frame(model, pd.read_csv(C.PRODUCTION_CSV))
+    production_base = predict_frame(model, _load_production_base())
 
     # --- Evidently: Data Drift + qualidade de classificação (Concept Drift) ---
     definition = _data_definition()
@@ -67,23 +81,33 @@ def build_drift_report() -> dict:
     stats = compute_drift_stats(reference, production)
     stats.to_csv(C.DRIFT_STATS_CSV, index=False)
 
-    # --- Concept Drift: performance esperada (holdout) × produção ---
-    # A referência usa a métrica de HOLDOUT (out-of-sample) salva no treino; a
-    # performance in-sample da referência é otimista e não serve de baseline justo.
+    # --- Concept Drift: performance antes do choque (Produção-base) × produção ---
+    # O baseline é o mesmo modelo sobre a Produção-base, a única partição nunca vista
+    # no treino. O holdout não serve: ele sai da Referência, cujas linhas sintéticas
+    # foram geradas por uma cópula ajustada nas mesmas linhas reais que caem no
+    # holdout (vazamento), e por isso fica ~0,13 de ROC-AUC acima do desempenho real.
+    # Com ele, até o cenário sem choque disparava o alerta de degradação. Comparando
+    # com a Produção-base, a queda mede só o efeito do choque (zero sem choque).
     holdout = json.loads(C.MODEL_METRICS_PATH.read_text())
-    perf_ref = {"roc_auc": holdout["roc_auc"], "accuracy": holdout["accuracy"]}
+    perf_holdout = {"roc_auc": holdout["roc_auc"], "accuracy": holdout["accuracy"]}
+    perf_ref = _performance(production_base)
     perf_prod = _performance(production)
 
-    _write_summary(stats, perf_ref, perf_prod)
+    _write_summary(stats, perf_ref, perf_prod, perf_holdout)
 
     print(f"[drift_report] HTML  -> {C.DRIFT_HTML}")
     print(f"[drift_report] Stats -> {C.DRIFT_STATS_CSV}")
     print(f"[drift_report] Resumo-> {C.DRIFT_SUMMARY_MD}")
     print(
-        f"[drift_report] Concept Drift: ROC-AUC {perf_ref['roc_auc']} (holdout) -> "
+        f"[drift_report] Concept Drift: ROC-AUC {perf_ref['roc_auc']} (produção-base) -> "
         f"{perf_prod['roc_auc']} | acc {perf_ref['accuracy']} -> {perf_prod['accuracy']}"
     )
-    return {"stats": stats, "perf_reference": perf_ref, "perf_production": perf_prod}
+    return {
+        "stats": stats,
+        "perf_reference": perf_ref,
+        "perf_holdout": perf_holdout,
+        "perf_production": perf_prod,
+    }
 
 
 def _df_to_markdown(df: pd.DataFrame) -> str:
@@ -96,7 +120,7 @@ def _df_to_markdown(df: pd.DataFrame) -> str:
     return "\n".join([header, sep, *rows])
 
 
-def _write_summary(stats: pd.DataFrame, perf_ref: dict, perf_prod: dict) -> None:
+def _write_summary(stats: pd.DataFrame, perf_ref: dict, perf_prod: dict, perf_holdout: dict) -> None:
     drifted = stats[stats["psi"] >= PSI_MAJOR]["feature"].tolist()
     auc_drop = round(perf_ref["roc_auc"] - perf_prod["roc_auc"], 4)
     acc_drop = round(perf_ref["accuracy"] - perf_prod["accuracy"], 4)
@@ -118,13 +142,19 @@ def _write_summary(stats: pd.DataFrame, perf_ref: dict, perf_prod: dict) -> None
         "",
         "## Concept Drift (degradação do modelo)",
         "",
-        "Referência = performance de **holdout** (out-of-sample) do treino; "
-        "Produção = mesmo modelo sobre o dataset com drift (labels reais preservados).",
+        "Produção-base = mesmo modelo sobre a partição de produção **antes do choque** "
+        "(nunca vista no treino); Produção = mesmo modelo sobre o dataset com drift "
+        "(labels reais preservados). A queda isola o efeito do choque.",
         "",
-        "| Métrica | Referência (holdout) | Produção | Queda |",
+        "| Métrica | Produção-base (sem choque) | Produção | Queda |",
         "|---|---|---|---|",
         f"| ROC-AUC | {perf_ref['roc_auc']} | {perf_prod['roc_auc']} | {auc_drop} |",
         f"| Accuracy | {perf_ref['accuracy']} | {perf_prod['accuracy']} | {acc_drop} |",
+        "",
+        f"Holdout do treino (informativo): ROC-AUC {perf_holdout['roc_auc']}, "
+        f"accuracy {perf_holdout['accuracy']}. Ele não é usado como baseline porque é "
+        "otimista: as linhas sintéticas da Referência foram geradas a partir das mesmas "
+        "linhas reais que caem no holdout.",
         "",
         "> O relatório visual completo do Evidently está em `drift_report.html`.",
         "",

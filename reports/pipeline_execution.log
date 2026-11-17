@@ -925,3 +925,780 @@ Traceback (most recent call last):
   File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_api.py", line 230, in broken_training
     raise RuntimeError("falha simulada no treino")
 RuntimeError: falha simulada no treino
+2026-11-16 12:22:10 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:22:12 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:22:13 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:22:16 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:23:15 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 12:23:38 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 12:23:55 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:24:06 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 12:24:15 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:24:31 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 12:25:19 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:25:44 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 12:25:49 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:26:06 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 12:26:46 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 12:27:12 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:36:07 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 12:36:20 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 12:36:39 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 16:18:32 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 16:18:47 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 23:04:43 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-16 23:04:50 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-16 23:07:21 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 00:46:55 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 00:47:25 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 00:47:34 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 00:47:44 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:01:15 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:05:20 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:05:20 [INFO] credit.pipeline - >>> Iniciando estágio: [corrupted_batch_ingestion_gate]
+2026-11-17 01:05:20 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
+2026-11-17 01:05:20 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+    return schema.validate(df, lazy=lazy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+    return self._validate(
+           ^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+    return self.get_backend(check_obj).validate(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+    raise SchemaErrors(
+pandera.errors.SchemaErrors: {
+    "DATA": {
+        "DUPLICATES": [
+            {
+                "schema": null,
+                "column": null,
+                "check": "multiple_fields_uniqueness",
+                "error": "columns '('Age', 'Credit amount', 'Duration', 'Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose')' not unique:   Age  Credit amount  Duration   Sex  Job Housing Saving accounts Checking account   Purpose5   50           4000        36  male    2    free          little       no_account  business"
+            }
+        ],
+        "DATAFRAME_CHECK": [
+            {
+                "schema": null,
+                "column": "Age",
+                "check": "in_range(18, 120)",
+                "error": "Column 'Age' failed element-wise validator number 0: in_range(18, 120) failure cases: 15"
+            },
+            {
+                "schema": null,
+                "column": "Credit amount",
+                "check": "greater_than(0)",
+                "error": "Column 'Credit amount' failed element-wise validator number 0: greater_than(0) failure cases: -1000"
+            },
+            {
+                "schema": null,
+                "column": "Duration",
+                "check": "greater_than(0)",
+                "error": "Column 'Duration' failed element-wise validator number 0: greater_than(0) failure cases: 0"
+            },
+            {
+                "schema": null,
+                "column": "Sex",
+                "check": "isin(['female', 'male'])",
+                "error": "Column 'Sex' failed element-wise validator number 0: isin(['female', 'male']) failure cases: unknown"
+            },
+            {
+                "schema": null,
+                "column": "Purpose",
+                "check": "isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])",
+                "error": "Column 'Purpose' failed element-wise validator number 0: isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others']) failure cases: crypto_trading"
+            }
+        ]
+    },
+    "SCHEMA": {
+        "SERIES_CONTAINS_NULLS": [
+            {
+                "schema": null,
+                "column": "Housing",
+                "check": "not_nullable",
+                "error": "non-nullable series 'Housing' contains null values:3    NaNName: Housing, dtype: str"
+            }
+        ]
+    }
+}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+    yield result
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+    validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+    validated = validate_credit_data(df)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+    raise DataContractViolationError(msg, failure_cases=failure_df) from err
+src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:05:20 [INFO] credit.pipeline - <<< Concluído estágio: [corrupted_batch_ingestion_gate] em 0.0376 segundos | CPU 93.9% | RSS 303.3 MB
+2026-11-17 01:10:56 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:10:56 [INFO] credit.pipeline - >>> Iniciando estágio: [corrupted_batch_ingestion_gate]
+2026-11-17 01:10:56 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
+2026-11-17 01:10:56 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+    return schema.validate(df, lazy=lazy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+    return self._validate(
+           ^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+    return self.get_backend(check_obj).validate(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+    raise SchemaErrors(
+pandera.errors.SchemaErrors: {
+    "DATA": {
+        "DUPLICATES": [
+            {
+                "schema": null,
+                "column": null,
+                "check": "multiple_fields_uniqueness",
+                "error": "columns '('Age', 'Credit amount', 'Duration', 'Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose')' not unique:   Age  Credit amount  Duration   Sex  Job Housing Saving accounts Checking account   Purpose5   50           4000        36  male    2    free          little       no_account  business"
+            }
+        ],
+        "DATAFRAME_CHECK": [
+            {
+                "schema": null,
+                "column": "Age",
+                "check": "in_range(18, 120)",
+                "error": "Column 'Age' failed element-wise validator number 0: in_range(18, 120) failure cases: 15"
+            },
+            {
+                "schema": null,
+                "column": "Credit amount",
+                "check": "greater_than(0)",
+                "error": "Column 'Credit amount' failed element-wise validator number 0: greater_than(0) failure cases: -1000"
+            },
+            {
+                "schema": null,
+                "column": "Duration",
+                "check": "greater_than(0)",
+                "error": "Column 'Duration' failed element-wise validator number 0: greater_than(0) failure cases: 0"
+            },
+            {
+                "schema": null,
+                "column": "Sex",
+                "check": "isin(['female', 'male'])",
+                "error": "Column 'Sex' failed element-wise validator number 0: isin(['female', 'male']) failure cases: unknown"
+            },
+            {
+                "schema": null,
+                "column": "Purpose",
+                "check": "isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])",
+                "error": "Column 'Purpose' failed element-wise validator number 0: isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others']) failure cases: crypto_trading"
+            }
+        ]
+    },
+    "SCHEMA": {
+        "SERIES_CONTAINS_NULLS": [
+            {
+                "schema": null,
+                "column": "Housing",
+                "check": "not_nullable",
+                "error": "non-nullable series 'Housing' contains null values:3    NaNName: Housing, dtype: str"
+            }
+        ]
+    }
+}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+    yield result
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+    validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+    validated = validate_credit_data(df)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+    raise DataContractViolationError(msg, failure_cases=failure_df) from err
+src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:10:56 [INFO] credit.pipeline - <<< Concluído estágio: [corrupted_batch_ingestion_gate] em 0.0353 segundos | CPU 98.2% | RSS 306.0 MB
+2026-11-17 01:13:58 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:13:58 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:13:58 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-17 01:13:58 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:13:58 [INFO] credit.pipeline - MLflow Run iniciada com ID: 408cf4a7b05e4cb5a9e249a0a245d246
+2026-11-17 01:13:58 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-17 01:13:58 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0211 segundos | CPU 83.0% | RSS 390.5 MB
+2026-11-17 01:13:58 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-17 01:13:58 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:13:58 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0245 segundos | CPU 99.3% | RSS 391.5 MB
+2026-11-17 01:13:58 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-17 01:13:58 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0255 segundos | CPU 87.2% | RSS 397.5 MB
+2026-11-17 01:13:58 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-17 01:13:59 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5134 segundos | CPU 357.8% | RSS 411.0 MB
+2026-11-17 01:13:59 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-17 01:13:59 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0037 segundos | CPU 96.7% | RSS 411.5 MB
+2026-11-17 01:13:59 [INFO] credit.pipeline - >>> Iniciando estágio: [production_ingestion_gate]
+2026-11-17 01:13:59 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:13:59 [INFO] credit.pipeline - <<< Concluído estágio: [production_ingestion_gate] em 0.0079 segundos | CPU 97.7% | RSS 411.5 MB
+2026-11-17 01:13:59 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-17 01:13:59 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4505 segundos | CPU 96.4% | RSS 452.3 MB
+2026-11-17 01:13:59 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-17 01:13:59 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.0466s, alertas críticos de drift=2
+2026-11-17 01:13:59 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-17 01:13:59 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-17 01:13:59 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-17 01:13:59 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-17 01:13:59 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-17 01:13:59 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-17 01:13:59 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:13:59 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-17 01:13:59 [INFO] credit.pipeline -    Run ID: 408cf4a7b05e4cb5a9e249a0a245d246
+2026-11-17 01:13:59 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-17 01:13:59 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:15:29 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:16:23 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:37:15 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:37:15 [INFO] credit.pipeline - >>> Iniciando estágio: [corrupted_batch_ingestion_gate]
+2026-11-17 01:37:15 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
+2026-11-17 01:37:15 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+    return schema.validate(df, lazy=lazy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+    return self._validate(
+           ^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+    return self.get_backend(check_obj).validate(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+    raise SchemaErrors(
+pandera.errors.SchemaErrors: {
+    "DATA": {
+        "DUPLICATES": [
+            {
+                "schema": null,
+                "column": null,
+                "check": "multiple_fields_uniqueness",
+                "error": "columns '('Age', 'Credit amount', 'Duration', 'Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose')' not unique:   Age  Credit amount  Duration   Sex  Job Housing Saving accounts Checking account   Purpose5   50           4000        36  male    2    free          little       no_account  business"
+            }
+        ],
+        "DATAFRAME_CHECK": [
+            {
+                "schema": null,
+                "column": "Age",
+                "check": "in_range(18, 120)",
+                "error": "Column 'Age' failed element-wise validator number 0: in_range(18, 120) failure cases: 15"
+            },
+            {
+                "schema": null,
+                "column": "Credit amount",
+                "check": "greater_than(0)",
+                "error": "Column 'Credit amount' failed element-wise validator number 0: greater_than(0) failure cases: -1000"
+            },
+            {
+                "schema": null,
+                "column": "Duration",
+                "check": "greater_than(0)",
+                "error": "Column 'Duration' failed element-wise validator number 0: greater_than(0) failure cases: 0"
+            },
+            {
+                "schema": null,
+                "column": "Sex",
+                "check": "isin(['female', 'male'])",
+                "error": "Column 'Sex' failed element-wise validator number 0: isin(['female', 'male']) failure cases: unknown"
+            },
+            {
+                "schema": null,
+                "column": "Purpose",
+                "check": "isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])",
+                "error": "Column 'Purpose' failed element-wise validator number 0: isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others']) failure cases: crypto_trading"
+            }
+        ]
+    },
+    "SCHEMA": {
+        "SERIES_CONTAINS_NULLS": [
+            {
+                "schema": null,
+                "column": "Housing",
+                "check": "not_nullable",
+                "error": "non-nullable series 'Housing' contains null values:3    NaNName: Housing, dtype: str"
+            }
+        ]
+    }
+}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+    yield result
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+    validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+    validated = validate_credit_data(df)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+    raise DataContractViolationError(msg, failure_cases=failure_df) from err
+src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:37:15 [INFO] credit.pipeline - <<< Concluído estágio: [corrupted_batch_ingestion_gate] em 0.0455 segundos | CPU 96.9% | RSS 304.3 MB
+2026-11-17 01:37:33 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:37:33 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:37:33 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-17 01:37:33 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:37:33 [INFO] credit.pipeline - MLflow Run iniciada com ID: 249d0f2fd05d49a6ac9c4a3f7e1f8ab3
+2026-11-17 01:37:33 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-17 01:37:33 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0219 segundos | CPU 99.1% | RSS 389.1 MB
+2026-11-17 01:37:33 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-17 01:37:33 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:37:33 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0255 segundos | CPU 101.1% | RSS 390.7 MB
+2026-11-17 01:37:33 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-17 01:37:33 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0264 segundos | CPU 90.8% | RSS 398.2 MB
+2026-11-17 01:37:33 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-17 01:37:33 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5317 segundos | CPU 357.0% | RSS 409.3 MB
+2026-11-17 01:37:33 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-17 01:37:33 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0042 segundos | CPU 100.1% | RSS 409.5 MB
+2026-11-17 01:37:33 [INFO] credit.pipeline - >>> Iniciando estágio: [production_ingestion_gate]
+2026-11-17 01:37:33 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:37:33 [INFO] credit.pipeline - <<< Concluído estágio: [production_ingestion_gate] em 0.0087 segundos | CPU 98.0% | RSS 409.5 MB
+2026-11-17 01:37:33 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-17 01:37:34 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4861 segundos | CPU 95.5% | RSS 450.7 MB
+2026-11-17 01:37:34 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-17 01:37:34 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.1045s, alertas críticos de drift=2
+2026-11-17 01:37:34 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-17 01:37:34 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-17 01:37:34 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-17 01:37:34 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-17 01:37:34 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-17 01:37:34 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-17 01:37:34 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:37:34 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-17 01:37:34 [INFO] credit.pipeline -    Run ID: 249d0f2fd05d49a6ac9c4a3f7e1f8ab3
+2026-11-17 01:37:34 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-17 01:37:34 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:39:21 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:43:24 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:43:24 [INFO] credit.pipeline - >>> Iniciando estágio: [corrupted_batch_ingestion_gate]
+2026-11-17 01:43:24 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
+2026-11-17 01:43:24 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+    return schema.validate(df, lazy=lazy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+    return self._validate(
+           ^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+    return self.get_backend(check_obj).validate(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+    raise SchemaErrors(
+pandera.errors.SchemaErrors: {
+    "DATA": {
+        "DUPLICATES": [
+            {
+                "schema": null,
+                "column": null,
+                "check": "multiple_fields_uniqueness",
+                "error": "columns '('Age', 'Credit amount', 'Duration', 'Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose')' not unique:   Age  Credit amount  Duration   Sex  Job Housing Saving accounts Checking account   Purpose5   50           4000        36  male    2    free          little       no_account  business"
+            }
+        ],
+        "DATAFRAME_CHECK": [
+            {
+                "schema": null,
+                "column": "Age",
+                "check": "in_range(18, 120)",
+                "error": "Column 'Age' failed element-wise validator number 0: in_range(18, 120) failure cases: 15"
+            },
+            {
+                "schema": null,
+                "column": "Credit amount",
+                "check": "greater_than(0)",
+                "error": "Column 'Credit amount' failed element-wise validator number 0: greater_than(0) failure cases: -1000"
+            },
+            {
+                "schema": null,
+                "column": "Duration",
+                "check": "greater_than(0)",
+                "error": "Column 'Duration' failed element-wise validator number 0: greater_than(0) failure cases: 0"
+            },
+            {
+                "schema": null,
+                "column": "Sex",
+                "check": "isin(['female', 'male'])",
+                "error": "Column 'Sex' failed element-wise validator number 0: isin(['female', 'male']) failure cases: unknown"
+            },
+            {
+                "schema": null,
+                "column": "Purpose",
+                "check": "isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])",
+                "error": "Column 'Purpose' failed element-wise validator number 0: isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others']) failure cases: crypto_trading"
+            }
+        ]
+    },
+    "SCHEMA": {
+        "SERIES_CONTAINS_NULLS": [
+            {
+                "schema": null,
+                "column": "Housing",
+                "check": "not_nullable",
+                "error": "non-nullable series 'Housing' contains null values:3    NaNName: Housing, dtype: str"
+            }
+        ]
+    }
+}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+    yield result
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+    validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+    validated = validate_credit_data(df)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+    raise DataContractViolationError(msg, failure_cases=failure_df) from err
+src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:43:24 [INFO] credit.pipeline - <<< Concluído estágio: [corrupted_batch_ingestion_gate] em 0.0393 segundos | CPU 98.1% | RSS 304.1 MB
+2026-11-17 01:43:45 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:43:45 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:43:45 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-17 01:43:45 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:43:45 [INFO] credit.pipeline - MLflow Run iniciada com ID: 0f67973264ae4af8a8c9e43c352e1112
+2026-11-17 01:43:45 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-17 01:43:45 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0236 segundos | CPU 86.1% | RSS 390.4 MB
+2026-11-17 01:43:45 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-17 01:43:45 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:43:45 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0255 segundos | CPU 114.2% | RSS 393.6 MB
+2026-11-17 01:43:45 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-17 01:43:45 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0252 segundos | CPU 91.5% | RSS 399.7 MB
+2026-11-17 01:43:45 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-17 01:43:45 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5165 segundos | CPU 364.5% | RSS 409.9 MB
+2026-11-17 01:43:45 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-17 01:43:45 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0039 segundos | CPU 100.2% | RSS 410.2 MB
+2026-11-17 01:43:45 [INFO] credit.pipeline - >>> Iniciando estágio: [production_ingestion_gate]
+2026-11-17 01:43:45 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:43:45 [INFO] credit.pipeline - <<< Concluído estágio: [production_ingestion_gate] em 0.0087 segundos | CPU 97.3% | RSS 410.3 MB
+2026-11-17 01:43:45 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-17 01:43:46 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4555 segundos | CPU 98.1% | RSS 450.7 MB
+2026-11-17 01:43:46 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-17 01:43:46 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.0589s, alertas críticos de drift=2
+2026-11-17 01:43:46 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-17 01:43:46 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-17 01:43:46 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-17 01:43:46 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-17 01:43:46 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-17 01:43:46 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-17 01:43:46 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:43:46 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-17 01:43:46 [INFO] credit.pipeline -    Run ID: 0f67973264ae4af8a8c9e43c352e1112
+2026-11-17 01:43:46 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-17 01:43:46 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:45:06 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:51:00 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:54:00 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:54:00 [INFO] credit.pipeline - >>> Iniciando estágio: [corrupted_batch_ingestion_gate]
+2026-11-17 01:54:00 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
+2026-11-17 01:54:00 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+    return schema.validate(df, lazy=lazy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+    return self._validate(
+           ^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+    return self.get_backend(check_obj).validate(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+    raise SchemaErrors(
+pandera.errors.SchemaErrors: {
+    "DATA": {
+        "DUPLICATES": [
+            {
+                "schema": null,
+                "column": null,
+                "check": "multiple_fields_uniqueness",
+                "error": "columns '('Age', 'Credit amount', 'Duration', 'Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose')' not unique:   Age  Credit amount  Duration   Sex  Job Housing Saving accounts Checking account   Purpose5   50           4000        36  male    2    free          little       no_account  business"
+            }
+        ],
+        "DATAFRAME_CHECK": [
+            {
+                "schema": null,
+                "column": "Age",
+                "check": "in_range(18, 120)",
+                "error": "Column 'Age' failed element-wise validator number 0: in_range(18, 120) failure cases: 15"
+            },
+            {
+                "schema": null,
+                "column": "Credit amount",
+                "check": "greater_than(0)",
+                "error": "Column 'Credit amount' failed element-wise validator number 0: greater_than(0) failure cases: -1000"
+            },
+            {
+                "schema": null,
+                "column": "Duration",
+                "check": "greater_than(0)",
+                "error": "Column 'Duration' failed element-wise validator number 0: greater_than(0) failure cases: 0"
+            },
+            {
+                "schema": null,
+                "column": "Sex",
+                "check": "isin(['female', 'male'])",
+                "error": "Column 'Sex' failed element-wise validator number 0: isin(['female', 'male']) failure cases: unknown"
+            },
+            {
+                "schema": null,
+                "column": "Purpose",
+                "check": "isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])",
+                "error": "Column 'Purpose' failed element-wise validator number 0: isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others']) failure cases: crypto_trading"
+            }
+        ]
+    },
+    "SCHEMA": {
+        "SERIES_CONTAINS_NULLS": [
+            {
+                "schema": null,
+                "column": "Housing",
+                "check": "not_nullable",
+                "error": "non-nullable series 'Housing' contains null values:3    NaNName: Housing, dtype: str"
+            }
+        ]
+    }
+}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+    yield result
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+    validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+    validated = validate_credit_data(df)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+    raise DataContractViolationError(msg, failure_cases=failure_df) from err
+src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:54:00 [INFO] credit.pipeline - <<< Concluído estágio: [corrupted_batch_ingestion_gate] em 0.0440 segundos | CPU 91.0% | RSS 306.4 MB
+2026-11-17 01:54:27 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
+2026-11-17 01:54:27 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:54:27 [INFO] credit.pipeline -    INICIANDO PIPELINE UNIFICADO DE CRÉDITO COM MLFLOW TRACKING   
+2026-11-17 01:54:27 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:54:28 [INFO] credit.pipeline - MLflow Run iniciada com ID: da85fa1c35b64d57b2e2201be43a38b4
+2026-11-17 01:54:28 [INFO] credit.pipeline - >>> Iniciando estágio: [data_validation]
+2026-11-17 01:54:28 [INFO] credit.pipeline - <<< Concluído estágio: [data_validation] em 0.0225 segundos | CPU 104.1% | RSS 390.5 MB
+2026-11-17 01:54:28 [INFO] credit.pipeline - >>> Iniciando estágio: [ingestion_gate]
+2026-11-17 01:54:28 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'
+2026-11-17 01:54:28 [INFO] credit.pipeline - <<< Concluído estágio: [ingestion_gate] em 0.0252 segundos | CPU 100.2% | RSS 391.7 MB
+2026-11-17 01:54:28 [INFO] credit.pipeline - >>> Iniciando estágio: [data_split]
+2026-11-17 01:54:28 [INFO] credit.pipeline - <<< Concluído estágio: [data_split] em 0.0275 segundos | CPU 92.3% | RSS 398.1 MB
+2026-11-17 01:54:28 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
+2026-11-17 01:54:28 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.5205 segundos | CPU 361.9% | RSS 408.1 MB
+2026-11-17 01:54:28 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_simulation]
+2026-11-17 01:54:28 [INFO] credit.pipeline - <<< Concluído estágio: [drift_simulation] em 0.0047 segundos | CPU 90.7% | RSS 408.3 MB
+2026-11-17 01:54:28 [INFO] credit.pipeline - >>> Iniciando estágio: [production_ingestion_gate]
+2026-11-17 01:54:28 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:54:28 [INFO] credit.pipeline - <<< Concluído estágio: [production_ingestion_gate] em 0.0078 segundos | CPU 97.9% | RSS 408.4 MB
+2026-11-17 01:54:28 [INFO] credit.pipeline - >>> Iniciando estágio: [drift_detection]
+2026-11-17 01:54:29 [INFO] credit.pipeline - <<< Concluído estágio: [drift_detection] em 0.4663 segundos | CPU 96.2% | RSS 450.1 MB
+2026-11-17 01:54:29 [INFO] credit.pipeline - Registrando métricas de saúde operacional e artefatos no MLflow...
+2026-11-17 01:54:29 [INFO] credit.pipeline - Métricas registradas no MLflow: latência total=1.0745s, alertas críticos de drift=2
+2026-11-17 01:54:29 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_report.html
+2026-11-17 01:54:29 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_stats.csv
+2026-11-17 01:54:29 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/drift_summary.md
+2026-11-17 01:54:29 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline.joblib
+2026-11-17 01:54:29 [INFO] credit.pipeline - Artefato registrado no MLflow: models/credit_baseline_metrics.json
+2026-11-17 01:54:29 [INFO] credit.pipeline - Artefato registrado no MLflow: reports/pipeline_execution.log
+2026-11-17 01:54:29 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:54:29 [INFO] credit.pipeline -    PIPELINE UNIFICADO CONCLUÍDO COM SUCESSO!                    
+2026-11-17 01:54:29 [INFO] credit.pipeline -    Run ID: da85fa1c35b64d57b2e2201be43a38b4
+2026-11-17 01:54:29 [INFO] credit.pipeline -    Visualize o dashboard executando: uv run mlflow ui          
+2026-11-17 01:54:29 [INFO] credit.pipeline - =================================================================
+2026-11-17 01:55:23 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:56:00 [INFO] credit.pipeline - Ingestion gate aprovou o lote 'production' (1500 linhas)
+2026-11-17 01:56:34 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
+Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
+  - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
+  - Coluna 'Age' (índice 0): valor '15' violou checagem 'in_range(18, 120)'
+  - Coluna 'Credit amount' (índice 1): valor '-1000' violou checagem 'greater_than(0)'
+  - Coluna 'Duration' (índice 2): valor '0' violou checagem 'greater_than(0)'
+  - Coluna 'Sex' (índice 2): valor 'unknown' violou checagem 'isin(['female', 'male'])'
+  - Coluna 'Housing' (índice 3): valor 'nan' violou checagem 'not_nullable'
+  - Coluna 'Purpose' (índice 2): valor 'crypto_trading' violou checagem 'isin(['business', 'car', 'domestic appliances', 'education', 'furniture/equipment', 'radio/TV', 'repairs', 'vacation/others'])'

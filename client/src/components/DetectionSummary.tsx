@@ -69,7 +69,7 @@ function KpiRow({ snapshot }: { snapshot: DetectionSnapshot }) {
         label="ROC-AUC em produção"
         value={formatNumber(concept.production.roc_auc, 3)}
         delta={{
-          text: `${arrow(-concept.roc_auc_drop)} ${formatNumber(Math.abs(concept.roc_auc_drop), 3)} vs. holdout ${formatNumber(concept.reference.roc_auc, 3)}`,
+          text: `${arrow(-concept.roc_auc_drop)} ${formatNumber(Math.abs(concept.roc_auc_drop), 3)} vs. produção-base ${formatNumber(concept.reference.roc_auc, 3)}`,
           bad: concept.roc_auc_drop > 0,
         }}
       />
@@ -77,7 +77,7 @@ function KpiRow({ snapshot }: { snapshot: DetectionSnapshot }) {
         label="Acurácia em produção"
         value={formatPercent(concept.production.accuracy)}
         delta={{
-          text: `${arrow(-concept.accuracy_drop)} ${formatPoints(Math.abs(concept.accuracy_drop), 1, false)} vs. holdout ${formatPercent(concept.reference.accuracy)}`,
+          text: `${arrow(-concept.accuracy_drop)} ${formatPoints(Math.abs(concept.accuracy_drop), 1, false)} vs. produção-base ${formatPercent(concept.reference.accuracy)}`,
           bad: concept.accuracy_drop > 0,
         }}
       />
@@ -85,7 +85,7 @@ function KpiRow({ snapshot }: { snapshot: DetectionSnapshot }) {
         label="Alerta de desempenho"
         value={concept.degraded ? 'Degradado' : 'Dentro do limite'}
         status={concept.degraded ? { tone: 'critical', text: 'Concept drift' } : { tone: 'good', text: 'OK' }}
-        note={`Dispara com queda de ROC-AUC ≥ ${formatNumber(thresholds.roc_auc_drop_alert, 2)}`}
+        note={`Dispara com queda de ROC-AUC ≥ ${formatNumber(thresholds.roc_auc_drop_alert, 2)} vs. produção-base`}
       />
     </dl>
   )
