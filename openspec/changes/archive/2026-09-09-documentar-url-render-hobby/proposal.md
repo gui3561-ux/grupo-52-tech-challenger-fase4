@@ -4,7 +4,7 @@ O serviço já está Live no Render Hobby e a API pública responde (`/health`, 
 
 ## What Changes
 
-- Registrar no README a URL pública verificada `https://grupo-98-tech-challenger-fase4.onrender.com` (Swagger em `/docs`, health em `/health`), no lugar do placeholder “colar depois do deploy”.
+- Registrar no README a URL pública verificada `https://grupo-52-tech-challenger-fase4.onrender.com` (Swagger em `/docs`, health em `/health`), no lugar do placeholder “colar depois do deploy”.
 - Documentar o recorte Hobby: o serviço permanece nesse plano; instância pode dormir; acordar com `/health` antes da demo; fallback local `docker compose` + `/docs`.
 - Na aplicação: autenticar o Render CLI se necessário, inspecionar o serviço `srv-dagm0e942hec73cu54t0` e só então aplicar ajustes compatíveis com Hobby (env, health, documentação). **Não** subir compute para Standard/Pro (`1c-2g` ou acima).
 - O vídeo continua fora: gravado depois por um integrante.

@@ -12,7 +12,7 @@ A Etapa 4 do edital exige a formalização teórica e prática da governança em
 - Fornecer roteiro completo e minutado para gravação do vídeo pelo método STAR.
 
 **Non-Goals:**
-- Gravar o vídeo físico (responsabilidade dos alunos integrantes do Grupo 98).
+- Gravar o vídeo físico (responsabilidade dos alunos integrantes do Grupo 52).
 - Apagar documentação ou código da Fase 3 (será mantido preservado em seção de legado ao final).
 
 ## Decisions

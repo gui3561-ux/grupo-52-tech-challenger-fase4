@@ -447,10 +447,10 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-14 20:13:25 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.0001 segundos
 2026-11-14 20:13:25 [ERROR] credit.pipeline - Pipeline interrompido no estágio [model_training]: falha simulada no treino
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
     train_metrics = train_baseline()
                     ^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
     raise RuntimeError("falha simulada no treino")
 RuntimeError: falha simulada no treino
 2026-11-14 20:13:38 [INFO] credit.pipeline - >>> Iniciando estágio: [sample_stage]
@@ -531,10 +531,10 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-14 20:13:40 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.0001 segundos
 2026-11-14 20:13:40 [ERROR] credit.pipeline - Pipeline interrompido no estágio [model_training]: falha simulada no treino
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
     train_metrics = train_baseline()
                     ^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
     raise RuntimeError("falha simulada no treino")
 RuntimeError: falha simulada no treino
 2026-11-14 20:13:50 [INFO] credit.pipeline - >>> Iniciando estágio: [sample_stage]
@@ -615,10 +615,10 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-14 20:13:53 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.0001 segundos
 2026-11-14 20:13:53 [ERROR] credit.pipeline - Pipeline interrompido no estágio [model_training]: falha simulada no treino
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/pipeline.py", line 125, in run_pipeline
     train_metrics = train_baseline()
                     ^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/tests/test_credit_observability.py", line 81, in _boom
     raise RuntimeError("falha simulada no treino")
 RuntimeError: falha simulada no treino
 2026-11-15 22:21:21 [INFO] credit.pipeline - MLflow configurado com Tracking URI: 'sqlite:///mlflow.db' | Experimento: 'credit-scoring-mlops'
@@ -704,16 +704,16 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-15 22:36:07 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
 2026-11-15 22:36:07 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
     return schema.validate(df, lazy=lazy)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
     return self._validate(
            ^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
     return self.get_backend(check_obj).validate(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
     raise SchemaErrors(
 pandera.errors.SchemaErrors: {
     "DATA": {
@@ -773,14 +773,14 @@ pandera.errors.SchemaErrors: {
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
     yield result
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
     validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
     validated = validate_credit_data(df)
                 ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
     raise DataContractViolationError(msg, failure_cases=failure_df) from err
 src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
   - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
@@ -908,21 +908,21 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-16 09:08:30 [INFO] credit.pipeline - >>> Iniciando estágio: [model_training]
 2026-11-16 09:08:30 [ERROR] credit.pipeline - !!! Falha no estágio: [model_training]
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
     yield result
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 134, in run_pipeline
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/pipeline.py", line 134, in run_pipeline
     train_metrics = train_baseline()
                     ^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_api.py", line 230, in broken_training
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/tests/test_credit_api.py", line 230, in broken_training
     raise RuntimeError("falha simulada no treino")
 RuntimeError: falha simulada no treino
 2026-11-16 09:08:30 [INFO] credit.pipeline - <<< Concluído estágio: [model_training] em 0.0030 segundos | CPU 79.6% | RSS 459.8 MB
 2026-11-16 09:08:30 [ERROR] credit.pipeline - Pipeline interrompido no estágio [model_training]: falha simulada no treino
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/pipeline.py", line 134, in run_pipeline
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/pipeline.py", line 134, in run_pipeline
     train_metrics = train_baseline()
                     ^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/tests/test_credit_api.py", line 230, in broken_training
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/tests/test_credit_api.py", line 230, in broken_training
     raise RuntimeError("falha simulada no treino")
 RuntimeError: falha simulada no treino
 2026-11-16 12:22:10 [WARNING] credit.pipeline - Ingestion Gate bloqueou lote com 5 registro(s) inválido(s) de 6:
@@ -1055,16 +1055,16 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-17 01:05:20 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
 2026-11-17 01:05:20 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
     return schema.validate(df, lazy=lazy)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
     return self._validate(
            ^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
     return self.get_backend(check_obj).validate(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
     raise SchemaErrors(
 pandera.errors.SchemaErrors: {
     "DATA": {
@@ -1124,14 +1124,14 @@ pandera.errors.SchemaErrors: {
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
     yield result
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
     validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
     validated = validate_credit_data(df)
                 ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
     raise DataContractViolationError(msg, failure_cases=failure_df) from err
 src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
   - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
@@ -1147,16 +1147,16 @@ src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 v
 2026-11-17 01:10:56 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
 2026-11-17 01:10:56 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
     return schema.validate(df, lazy=lazy)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
     return self._validate(
            ^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
     return self.get_backend(check_obj).validate(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
     raise SchemaErrors(
 pandera.errors.SchemaErrors: {
     "DATA": {
@@ -1216,14 +1216,14 @@ pandera.errors.SchemaErrors: {
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
     yield result
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
     validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
     validated = validate_credit_data(df)
                 ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
     raise DataContractViolationError(msg, failure_cases=failure_df) from err
 src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
   - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
@@ -1291,16 +1291,16 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-17 01:37:15 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
 2026-11-17 01:37:15 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
     return schema.validate(df, lazy=lazy)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
     return self._validate(
            ^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
     return self.get_backend(check_obj).validate(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
     raise SchemaErrors(
 pandera.errors.SchemaErrors: {
     "DATA": {
@@ -1360,14 +1360,14 @@ pandera.errors.SchemaErrors: {
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
     yield result
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
     validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
     validated = validate_credit_data(df)
                 ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
     raise DataContractViolationError(msg, failure_cases=failure_df) from err
 src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
   - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
@@ -1426,16 +1426,16 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-17 01:43:24 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
 2026-11-17 01:43:24 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
     return schema.validate(df, lazy=lazy)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
     return self._validate(
            ^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
     return self.get_backend(check_obj).validate(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
     raise SchemaErrors(
 pandera.errors.SchemaErrors: {
     "DATA": {
@@ -1495,14 +1495,14 @@ pandera.errors.SchemaErrors: {
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
     yield result
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
     validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
     validated = validate_credit_data(df)
                 ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
     raise DataContractViolationError(msg, failure_cases=failure_df) from err
 src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
   - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'
@@ -1562,16 +1562,16 @@ Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
 2026-11-17 01:54:00 [ERROR] credit.pipeline - Ingestion gate BLOQUEOU o lote 'corrupted_demo': 15 violação(ões)
 2026-11-17 01:54:00 [ERROR] credit.pipeline - !!! Falha no estágio: [corrupted_batch_ingestion_gate]
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 138, in validate_credit_data
     return schema.validate(df, lazy=lazy)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 218, in validate
     return self._validate(
            ^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/api/pandas/container.py", line 238, in _validate
     return self.get_backend(check_obj).validate(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/.venv/lib/python3.11/site-packages/pandera/backends/pandas/container.py", line 150, in validate
     raise SchemaErrors(
 pandera.errors.SchemaErrors: {
     "DATA": {
@@ -1631,14 +1631,14 @@ pandera.errors.SchemaErrors: {
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 82, in track_stage_latency
     yield result
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/run_etapa1.py", line 54, in main
     validate_batch_with_tracking(corrupted_batch, batch_name="corrupted_demo")
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/observability.py", line 141, in validate_batch_with_tracking
     validated = validate_credit_data(df)
                 ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-98-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
+  File "/Users/cristiano.oloiveira/www/github/pos-machine-learning-fiap/grupo-52-tech-challenger-fase4/src/credit/data/contracts.py", line 163, in validate_credit_data
     raise DataContractViolationError(msg, failure_cases=failure_df) from err
 src.credit.data.contracts.DataContractViolationError: Barreira de Ingestão: 7 violação(ões) do contrato de dados detectada(s):
   - Registro (índice 5): duplicado, violou checagem 'multiple_fields_uniqueness'

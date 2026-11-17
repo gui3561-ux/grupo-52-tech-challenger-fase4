@@ -4,7 +4,7 @@ A revisão contra o Tech Challenge da Fase 4 mostrou que o pipeline (dados, LSTM
 
 ## What Changes
 
-- Listar no README os integrantes do Grupo 98 (RM e nome), a partir do `LICENSE`.
+- Listar no README os integrantes do Grupo 52 (RM e nome), a partir do `LICENSE`.
 - Preparar o serviço para Render: a API passa a escutar a porta da plataforma; o README descreve o deploy Docker e só publica URL pública quando ela existir (sem inventar link).
 - Documentar o ajuste de hiperparâmetros (unidades, dropout, early stopping) no notebook de avaliação e no README, sem transformar o notebook no treino oficial.
 - Explicitar no README e no notebook por que o LSTM perde da naive em preço absoluto e por que o artefato mesmo assim é o da entrega (sem retreinar só para “ganhar” da baseline).

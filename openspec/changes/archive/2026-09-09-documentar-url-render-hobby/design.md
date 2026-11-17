@@ -1,6 +1,6 @@
 ## Context
 
-See `proposal.md` (Why). A API Hobby já responde em `https://grupo-98-tech-challenger-fase4.onrender.com` (health, ready, predict ~40.9999, docs). O README ainda pede para colar a URL. O `render.yaml` não declara `plan`. O CLI `render` v2.20.0 está instalado, mas `render whoami` retorna unauthorized. O serviço no dashboard é `srv-dagm0e942hec73cu54t0`. RSS observado ~700 MB com TensorFlow; Starter/Free têm 512 MB — a instância está viva hoje, mas OOM é risco. Workspace Hobby ≠ compute Standard.
+See `proposal.md` (Why). A API Hobby já responde em `https://grupo-52-tech-challenger-fase4.onrender.com` (health, ready, predict ~40.9999, docs). O README ainda pede para colar a URL. O `render.yaml` não declara `plan`. O CLI `render` v2.20.0 está instalado, mas `render whoami` retorna unauthorized. O serviço no dashboard é `srv-dagm0e942hec73cu54t0`. RSS observado ~700 MB com TensorFlow; Starter/Free têm 512 MB — a instância está viva hoje, mas OOM é risco. Workspace Hobby ≠ compute Standard.
 
 ## Goals / Non-Goals
 

@@ -61,7 +61,7 @@ def create_app(tracking_uri: str | None = None) -> FastAPI:
         version="0.1.0",
         description=(
             "Simulação, detecção e visualização de data drift e execução do pipeline de "
-            "Credit Scoring (Tech Challenge Fase 4 — Grupo 98)."
+            "Credit Scoring (Tech Challenge Fase 4 — Grupo 52)."
         ),
     )
     app.state.executor = Executor(tracking_uri or os.environ.get("MLFLOW_TRACKING_URI", DEFAULT_TRACKING_URI))

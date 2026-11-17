@@ -1,7 +1,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Caminho de deploy no Render
-O README SHALL descrever o serviço Docker já publicado no Render Hobby, com health check em `/health` e a URL pública `https://grupo-98-tech-challenger-fase4.onrender.com`, de modo que um avaliador alcance a API sem adivinhar o hostname.
+O README SHALL descrever o serviço Docker já publicado no Render Hobby, com health check em `/health` e a URL pública `https://grupo-52-tech-challenger-fase4.onrender.com`, de modo que um avaliador alcance a API sem adivinhar o hostname.
 
 #### Scenario: Integrante publica no Render
 - **WHEN** um integrante segue a seção Render do README com este repositório e a imagem Docker

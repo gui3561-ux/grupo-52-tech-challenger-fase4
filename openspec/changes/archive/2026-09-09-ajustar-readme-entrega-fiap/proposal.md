@@ -5,7 +5,7 @@ O README atual descreve o pipeline, mas não fecha o ciclo da banca: o `curl` de
 ## What Changes
 
 - Reescrever o README para um professor conseguir clonar, subir a API e chamar `/predict` sem adivinhar.
-- Identificar **Grupo 98**, justificar **PETR4.SA** (empresa à escolha; DIS no PDF é só exemplo) e o horizonte **D+1**.
+- Identificar **Grupo 52**, justificar **PETR4.SA** (empresa à escolha; DIS no PDF é só exemplo) e o horizonte **D+1**.
 - Deixar explícito o que vem no clone: artefatos em `models/` versionados; cache `data/raw.parquet` fora do git; treino/notebooks baixam via yfinance se o cache não existir.
 - Trocar o `curl` quebrado por uma chamada reproduzível (payload JSON válido de 60 fechamentos) e uma resposta de exemplo alinhada ao modelo atual.
 - Documentar `/metrics` como evidência de monitoramento (latência, CPU, RSS) para o vídeo.

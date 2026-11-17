@@ -25,6 +25,6 @@ A Etapa 4 do Tech Challenge, somada aos critérios do Vídeo STAR, compõe 30% d
 ## Impact
 
 - README.md consolidado atendendo a 30% da pontuação do Tech Challenge.
-- Roteiro pronto para gravação imediata do vídeo pelos alunos do Grupo 98.
+- Roteiro pronto para gravação imediata do vídeo pelos alunos do Grupo 52.
 - Sem impactos destrutivos em código de produção ou testes existentes.
 

@@ -5,7 +5,7 @@
 
 ## 2. README
 
-- [x] 2.1 Reordenar o README (identidade/recorte → clone → Docker rápido → `/predict` + `/metrics` → treino/notebooks → nuvem/vídeo → testes/estrutura) e verificar que o topo cita Grupo 98, PETR4.SA, D+1 e que DIS no enunciado é exemplo
+- [x] 2.1 Reordenar o README (identidade/recorte → clone → Docker rápido → `/predict` + `/metrics` → treino/notebooks → nuvem/vídeo → testes/estrutura) e verificar que o topo cita Grupo 52, PETR4.SA, D+1 e que DIS no enunciado é exemplo
 - [x] 2.2 Documentar o que o clone contém (`models/` versionado, `data/raw.parquet` fora do git) e verificar que treino/notebooks ficam descritos como download via yfinance se o cache não existir
 - [x] 2.3 Trocar o `curl` quebrado por um comando que lê `examples/predict_payload.json`, incluir a resposta real do passo 1.2 e um `curl` de `/metrics` depois do predict, e verificar que o README não contém `/*` dentro do JSON e que cita contagem, latência, CPU e memória
 - [x] 2.4 Declarar entregáveis da fase (docs, Docker, vídeo da API em `/docs`, ainda sem URL pública) e completar a árvore (`tests/`, `Dockerfile`, `compose.yaml`, `examples/`), verificando que não há URL de produção inventada e que a naive vs LSTM permanece

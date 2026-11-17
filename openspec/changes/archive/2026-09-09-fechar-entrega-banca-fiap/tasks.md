@@ -1,6 +1,6 @@
 ## 1. Identidade e entregáveis
 
-- [x] 1.1 Incluir no README a tabela dos cinco integrantes (RM + nome iguais ao LICENSE) e verificar que os cinco RMs aparecem no topo junto de Grupo 98
+- [x] 1.1 Incluir no README a tabela dos cinco integrantes (RM + nome iguais ao LICENSE) e verificar que os cinco RMs aparecem no topo junto de Grupo 52
 - [x] 1.2 Atualizar a tabela de entregáveis: vídeo = gravado depois por um integrante via `/docs`; nuvem = Render, URL só depois do deploy, e verificar que não há hostname `onrender.com` inventado
 
 ## 2. Render

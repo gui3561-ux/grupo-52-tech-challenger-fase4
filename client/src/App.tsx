@@ -177,7 +177,7 @@ export function App() {
           <span className="brand-mark" aria-hidden="true" />
           <div>
             <h1>Monitor de Drift</h1>
-            <p>Credit Scoring · Tech Challenge Fase 4 · Grupo 98</p>
+            <p>Credit Scoring · Tech Challenge Fase 4 · Grupo 52</p>
           </div>
         </div>
         <div className="topbar-meta">

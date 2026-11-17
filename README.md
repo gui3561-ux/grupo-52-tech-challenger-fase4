@@ -2,9 +2,9 @@
 
 ### Sustentação, Qualidade de Dados, Detecção de Drift, Observabilidade e Governança
 
-Tech Challenge da Fase 4 da pós-graduação em Machine Learning (FIAP). **Grupo 98.**
+Tech Challenge da Fase 4 da pós-graduação em Machine Learning (FIAP). **Grupo 52.**
 
-- **Repositório GitHub:** [https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4](https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4)
+- **Repositório GitHub:** [https://github.com/gui3561-ux/grupo-52-tech-challenger-fase4](https://github.com/gui3561-ux/grupo-52-tech-challenger-fase4)
 
 **Vídeo STAR (≤ 5 min):** [https://youtu.be/hpg9go8HR9k](https://youtu.be/hpg9go8HR9k)
 
@@ -56,8 +56,8 @@ O projeto é gerenciado pelo [`uv`](https://docs.astral.sh/uv/) garantindo repro
 
 ```bash
 # 1. Clonar o repositório
-git clone https://github.com/gui3561-ux/grupo-98-tech-challenger-fase4.git
-cd grupo-98-tech-challenger-fase4
+git clone https://github.com/gui3561-ux/grupo-52-tech-challenger-fase4.git
+cd grupo-52-tech-challenger-fase4
 
 # 2. (Somente macOS) O XGBoost depende do runtime OpenMP, que não vem com o sistema
 brew install libomp
@@ -300,7 +300,7 @@ Implementada em `src/credit/observability.py` e integrada em `src/credit/pipelin
 
 ## 4. Governança de Dados e Conformidade com a LGPD
 
-O tratamento de dados pessoais no modelo de Credit Scoring do Grupo 98 foi concebido sob os princípios de *Privacy by Design* e *Privacy by Default*, atendendo integralmente à Lei Geral de Proteção de Dados Pessoais (**Lei nº 13.709/2018 - LGPD**).
+O tratamento de dados pessoais no modelo de Credit Scoring do Grupo 52 foi concebido sob os princípios de *Privacy by Design* e *Privacy by Default*, atendendo integralmente à Lei Geral de Proteção de Dados Pessoais (**Lei nº 13.709/2018 - LGPD**).
 
 ### 4.1. Bases Legais Aplicáveis
 
@@ -396,7 +396,7 @@ Diante da detecção tempestiva provida pela camada de observabilidade, a esteir
 ## 6. Estrutura de Diretórios da Fase 4
 
 ```
-grupo-98-tech-challenger-fase4/
+grupo-52-tech-challenger-fase4/
 ├── data/
 │   ├── raw/                       <- Dados brutos (German Credit original e com target Risk)
 │   ├── reference/                 <- Dataset de treino/baseline (3.500 registros: 700 reais + 2.800 sintéticos)

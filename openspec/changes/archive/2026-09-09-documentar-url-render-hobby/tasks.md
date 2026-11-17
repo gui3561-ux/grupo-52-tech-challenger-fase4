@@ -1,6 +1,6 @@
 ## 1. README da API na nuvem
 
-- [x] 1.1 Substituir o placeholder de URL no README pela URL pública `https://grupo-98-tech-challenger-fase4.onrender.com` (Swagger `/docs`, health `/health`) e verificar que a tabela de entregáveis aponta esse hostname e ainda diz que o vídeo será gravado depois por um integrante
+- [x] 1.1 Substituir o placeholder de URL no README pela URL pública `https://grupo-52-tech-challenger-fase4.onrender.com` (Swagger `/docs`, health `/health`) e verificar que a tabela de entregáveis aponta esse hostname e ainda diz que o vídeo será gravado depois por um integrante
 - [x] 1.2 Documentar o recorte Hobby (pode dormir; acordar com `GET /health`; fallback `docker compose` + `/docs`) e verificar que o README não pede upgrade para Standard/Pro
 
 ## 2. Render Hobby (CLI)
